@@ -1,0 +1,33 @@
+{
+  "name": "syruppay/jose",
+  "type": "library",
+  "description": "Jose PHP library for SyrupPay merchant",
+  "keywords": [
+    "SyrupPay",
+    "Jose",
+    "A128KW",
+    "HS256",
+    "A128CBC-HS256",
+    "JWE",
+    "JWS"
+  ],
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ByeongChan Park",
+      "email": "byeongchan.park@sk.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "phpseclib/phpseclib": "0.3.10",
+    "spomky-labs/aes-key-wrap": "v2.0.2",
+    "phpunit/phpunit": "4.7.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "":"src/main/php"
+    }
+  }
+}
