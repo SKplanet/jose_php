@@ -15,40 +15,43 @@ use com\skplanet\jose\JoseActionType;
 use com\skplanet\jose\JoseHeaderSpec;
 
 $src = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
-$key = '1234567890123456';
+$iss = 'sample';                    //SyrupPay 발급 iss
+$key = '1234567890123456';          //SyrupPay 발급 암복호화 키
 
-#JWE Sample
+//JWE 예제
+//1. Jwe Header 설정
 $jweHeader = new JoseHeader();
 $jweHeader->setAlg(Jwa::A128KW);
 $jweHeader->setEnc(Jwa::A128CBC_HS256);
-$jweHeader->setKid('sample');
+$jweHeader->setKid($iss);
 
+//2. Jwe 암호화 처리
 $jwe = new JweSerializer(JoseActionType::SERAILIZE, $jweHeader, $src, $key);
-
-//output : eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoic2FtcGxlIn0.azHNGWkwcfLGlnP_F2BX-et-E1li-DfBL3B51JzXfoPjI1fE-NpXoQ.1-lP58mjcoZaVHOov_22xg.HnEiP-KPyse6kFKaS05FuzSWiBL_20420Ngp6fpkvTRK69ggmz1xP41CmY19Q4P3M9Uu6lCfy36ZJxj_ORjGxg.w1xj1jT41AQXH72Johao8Q
 $enc = $jwe->compactSeriaization();
 
-$jwe = new JweSerializer(JoseActionType::DESERAILIZE, $enc, $key);
+//3. SyrupPay 연동
 
-//output is equals $src
+//4. 수신 Jwe 데이터 복호화
+$jwe = new JweSerializer(JoseActionType::DESERAILIZE, $enc, $key);
 $dec = $jwe->compactSeriaization();
 
 var_dump($dec);
 
-#JWS Sample
+//JWS 예제
+//1. Jws Header 설정
 $jwsHeader = new JoseHeader();
 $jwsHeader->setHeader(JoseHeaderSpec::TYP, 'JWT');
 $jwsHeader->setAlg(Jwa::HS256);
 $jwsHeader->setKid('sample');
 
+//2. Jws 서명 생성
 $jws = new JwsSerializer(JoseActionType::SERAILIZE, $jwsHeader, $src, $key);
-
-//output : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6InNhbXBsZSJ9.eyJpc3MiOiJzeXJ1cHBhcF9zYW1wbGUiLCAiZXhwIjoxMzAwODE5MzgwLCAiaXNTYW1wbGUiOnRydWV9._DoT8Entk5d2cLJTp0ZJ56hI3Gd7WaL4blO2fDdAEEg
 $enc = $jws->compactSeriaization();
 
-$jws = new JwsSerializer(JoseActionType::DESERAILIZE, $enc, $key);
+//3. SyrupPay 연동
 
-//output is equals $src
+//4. Jws 서명 검증 및 데이터 반환
+$jws = new JwsSerializer(JoseActionType::DESERAILIZE, $enc, $key);
 $dec = $jws->compactSeriaization();
 
 var_dump($dec);
