@@ -63,7 +63,7 @@ abstract class AesKeyWrap
     {
         if ($this->keyLength != strlen($key))
         {
-            throw new \InvalidArgumentException('JWE key must be '.$this->keyLength.' bytes');
+//            throw new \InvalidArgumentException('JWE key must be '.$this->keyLength.' bytes');
         }
     }
 
