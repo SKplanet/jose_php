@@ -10,7 +10,7 @@ composer를 사용하여 install을 할 수 있습니다. / [packagist](https://packagist.or
 
 ## JWE 지원 알고리즘
 ```
-alg : A128KW, 
+alg : A128KW, A256KW
 enc : A128CBC-HS256
 ```
 
