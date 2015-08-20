@@ -46,7 +46,9 @@ class JoseHeader
         $this->supported = array(
             'ALG' => array(
                 Jwa::A128KW => true,
-                Jwa::HS256 => true),
+                Jwa::HS256 => true,
+                Jwa::A256KW => true
+                ),
             'ENC' => array(
                 Jwa::A128CBC_HS256 => true)
         );

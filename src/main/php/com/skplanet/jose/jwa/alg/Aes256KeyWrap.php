@@ -2,11 +2,13 @@
 /**
  * Created by IntelliJ IDEA.
  * User: 1000808
- * Date: 2015-08-03
- * Time: 오후 12:02
+ * Date: 2015-08-20
+ * Time: 오후 7:46
  */
 
-namespace com\skplanet\jose\jwa;
+namespace com\skplanet\jose\jwa\alg;
+
+use AESKW\A256KW;
 
 /**
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,24 +29,18 @@ namespace com\skplanet\jose\jwa;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * Class Jwa
- * @package com\skplanet\jose\jwa
+ * Class Aes256KeyWrap
+ * @package com\skplanet\jose\jwa\alg
  */
-class Jwa
+class Aes256KeyWrap extends AesKeyWrap
 {
-    /**
-     * JWE alg algorithm name
-     */
-    const A128KW = 'A128KW';
-    const A256KW = 'A256KW';
+    public function wrap($key, $src)
+    {
+        $this->raw = A256KW::wrap($key, $src);
+    }
 
-    /**
-     * JWE enc algorithm name
-     */
-    const A128CBC_HS256 = 'A128CBC-HS256';
-
-    /**
-     * JWS alg algorithm name
-     */
-    const HS256 = 'HS256';
+    function unwrap($key, $src)
+    {
+        $this->raw = A256KW::unwrap($key, $src);
+    }
 }

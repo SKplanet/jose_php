@@ -9,6 +9,7 @@
 namespace com\skplanet\jose\jwa;
 
 use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
+use com\skplanet\jose\jwa\alg\Aes256KeyWrap;
 use com\skplanet\jose\jwa\alg\HmacSha256Signature;
 use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
 
@@ -41,6 +42,10 @@ class JwaFactory
         if ($alg == Jwa::A128KW)
         {
             return new Aes128KeyWrap(16);
+        }
+        else if ($alg == Jwa::A256KW)
+        {
+            return new Aes256KeyWrap(32);
         }
     }
 
