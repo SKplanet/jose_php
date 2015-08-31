@@ -96,13 +96,9 @@ class JweSerializer
         return $this->iv;
     }
 
-    public function setCek($cek)
+    public function setUserEncryptionKey($cek, $iv)
     {
         $this->cek = $cek;
-    }
-
-    public function setIv($iv)
-    {
         $this->iv = $iv;
     }
 

@@ -189,7 +189,7 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $joseHeader->setEnc(Jwa::A128CBC_HS256);
 
         $jweSerializer = new JweSerializer(JoseActionType::SERAILIZE, $joseHeader, null, null);
-        $jweSerializer->setCek($cek);
+        $jweSerializer->setUserEncryptionKey($cek, null);
         $at = $jweSerializer->getAt($aad, $iv, $cipherText, $al);
         $actual = Base64UrlSafeEncoder::encode($at);
 
@@ -222,8 +222,7 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $joseHeader->setEnc(Jwa::A128CBC_HS256);
 
         $obj = new JweSerializer(JoseActionType::SERAILIZE, $joseHeader, $src, $key);
-        $obj->setCek($cek);
-        $obj->setIv($iv);
+        $obj->setUserEncryptionKey($cek, $iv);
 
         $actual = $obj->compactSeriaization();
 
