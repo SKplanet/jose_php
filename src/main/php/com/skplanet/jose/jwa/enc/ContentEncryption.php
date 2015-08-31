@@ -75,4 +75,9 @@ class ContentEncryption
 
         return Base64UrlSafeEncoder::encode($this->raw);
     }
+
+    public function getContentEncryptionKeyGenerator()
+    {
+        return new ContentEncryptKeyGenerator($this->keyLength);
+    }
 }

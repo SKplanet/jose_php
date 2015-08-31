@@ -76,16 +76,6 @@ class JweSerializer
         }
     }
 
-    public function getCek(ContentEncryption $jweEnc)
-    {
-        if (is_null($this->cek))
-        {
-            $this->cek = $jweEnc->generateRandomKey($jweEnc->getKeyLength());
-        }
-
-        return $this->cek;
-    }
-
     public function getIv(ContentEncryption $jweEnc)
     {
         if (is_null($this->iv))
@@ -164,11 +154,14 @@ class JweSerializer
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
         $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
 
-        $cek = $this->getCek($jweEnc);
+        $cekGenerator = $jweEnc->getContentEncryptionKeyGenerator();
+        $cekGenerator->setUserEncryptionKey($this->cek);
+
         $iv = $this->getIv($jweEnc);
 
-        $jweAlg->encryption($this->key, $cek);
-        $this->b64Cek = $jweAlg->serialize();
+        $jweAlgResult = $jweAlg->encryption($this->key, $cekGenerator);
+        $cek = $jweAlgResult->getCek();
+        $this->b64Cek = Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek());
         $this->b64Iv = Base64UrlSafeEncoder::encode($iv);
 
         $jweEnc->encryption($this->payload, $cek, $iv);

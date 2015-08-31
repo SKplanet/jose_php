@@ -43,10 +43,13 @@ abstract class AesKeyWrap
         $this->keyLength = $keylength;
     }
 
-    public function encryption($key, $src)
+    public function encryption($key, $cekGenerator)
     {
         $this->isValidKeyLength($key);
+        $src = $cekGenerator->generateRandomKey();
         $this->wrap($key, $src);
+
+        return new JweAlgResult($src, $this->raw);
     }
 
     abstract public function wrap($key, $src);

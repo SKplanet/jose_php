@@ -11,12 +11,12 @@
 use com\skplanet\jose\JoseActionType;
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
+use com\skplanet\jose\jwa\enc\ContentEncryptKeyGenerator;
 use com\skplanet\jose\jwa\Jwa;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\jwe\JweSerializer;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 use com\skplanet\jose\util\ByteUtils;
-
 
 class JweSerializerTest extends PHPUnit_Framework_TestCase
 {
@@ -46,11 +46,13 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         //19ac2082e1721ab58a6afec05f854a52
         $key = Base64UrlSafeEncoder::decode('GawgguFyGrWKav7AX4VKUg');
 
-        $aesKeyWrap = new Aes128KeyWrap(16);
-        $aesKeyWrap->encryption($key, $cek);
-        $actual = $aesKeyWrap->serialize();
+        $cekGenerator = new ContentEncryptKeyGenerator(32);
+        $cekGenerator->setUserEncryptionKey($cek);
 
-        $this->assertEquals($expected, $actual);
+        $aesKeyWrap = new Aes128KeyWrap(16);
+        $jweAlgResult = $aesKeyWrap->encryption($key, $cekGenerator);
+
+        $this->assertEquals($expected, Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek()));
     }
 
     public function testIv()
@@ -58,8 +60,10 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $jweEnc = JwaFactory::getJweEncryptionAlgorithm(Jwa::A128CBC_HS256);
         $jweSerializer = new JweSerializer(JoseActionType::SERAILIZE, null, null, null);
 
+        $cekGenerator = new ContentEncryptKeyGenerator(32);
+
         $iv = $jweSerializer->getIv($jweEnc);
-        $cek = $jweSerializer->getCek($jweEnc);
+        $cek = $cekGenerator->generateRandomKey();
 
         $this->assertEquals(16, strlen($iv));
         $this->assertEquals(32, strlen($cek));
