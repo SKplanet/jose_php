@@ -24,11 +24,6 @@ class ContentEncryptKeyGenerator
         $this->cek = $cek;
     }
 
-    private function getKeyBitLength()
-    {
-        return $this->keyLength * 8;
-    }
-
     public function generateRandomKey()
     {
         if (is_null($this->cek))

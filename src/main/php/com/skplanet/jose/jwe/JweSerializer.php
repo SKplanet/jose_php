@@ -73,17 +73,10 @@ class JweSerializer
 
             $this->joseHeader = new JoseHeader();
             $this->joseHeader->deserialize($this->b64header);
-        }
-    }
 
-    public function getIv(ContentEncryption $jweEnc)
-    {
-        if (is_null($this->iv))
-        {
-            return $this->iv = $jweEnc->generateRandomKey($jweEnc->getIvLength());
+            $this->cek = Base64UrlSafeEncoder::decode($this->b64Cek);
+            $this->iv = Base64UrlSafeEncoder::decode($this->b64Iv);
         }
-
-        return $this->iv;
     }
 
     public function setUserEncryptionKey($cek, $iv)
@@ -95,35 +88,6 @@ class JweSerializer
     public function getAad()
     {
         return $this->joseHeader->serialize();
-    }
-
-    public function getAl()
-    {
-        $aadLen = strlen($this->getAad())*8;
-        return ByteUtils::convert2UnsignedLongBE($aadLen);
-    }
-
-    public function getHmac($aad, $iv, $cipherText, $al)
-    {
-        return implode('', array($aad, $iv, $cipherText, $al));
-    }
-
-    public function getAt($aad, $iv, $cipherText, $al)
-    {
-        $secret = substr($this->cek, 0, 16);
-        return substr(hash_hmac('sha256', $this->getHmac($aad, $iv, $cipherText, $al), $secret, true), 0, 16); //to binary
-    }
-
-    private function verifyAt($expected, $cipherText)
-    {
-        $actual = Base64UrlSafeEncoder::encode(
-                    $this->getAt($this->getAad(),
-                        $this->iv,
-                        $cipherText,
-                        $this->getAl()));
-
-        if ($actual!= $expected)
-            throw new InvalidAuthenticationTagException('not match : '.$actual);
     }
 
     public function compactSeriaization()
@@ -149,36 +113,27 @@ class JweSerializer
      */
     private function serialize()
     {
-        $this->b64header = $this->joseHeader->serialize();
-
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
         $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
 
         $cekGenerator = $jweEnc->getContentEncryptionKeyGenerator();
         $cekGenerator->setUserEncryptionKey($this->cek);
 
-        $iv = $this->getIv($jweEnc);
-
         $jweAlgResult = $jweAlg->encryption($this->key, $cekGenerator);
         $cek = $jweAlgResult->getCek();
-        $this->b64Cek = Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek());
-        $this->b64Iv = Base64UrlSafeEncoder::encode($iv);
 
-        $jweEnc->encryption($this->payload, $cek, $iv);
-        $cipherText = $jweEnc->getRaw();
-        $this->b64CipherText = $jweEnc->serialize();
+        $jweEncResult = $jweEnc->encryptAndSign($cek, $this->iv, $this->payload, $this->getAad());
 
-        $aad = $this->getAad();
-        $al = $this->getAl();
-
-        $this->b64At = Base64UrlSafeEncoder::encode($this->getAt($aad, $iv, $cipherText, $al));
+        $cipherText = $jweEncResult->getCipherText();
+        $at = $jweEncResult->getAt();
+        $iv = $jweEncResult->getIv();
 
         $this->target = sprintf("%s.%s.%s.%s.%s",
-            $this->b64header,
-            $this->b64Cek,
-            $this->b64Iv,
-            $this->b64CipherText,
-            $this->b64At
+            $this->joseHeader->serialize(),
+            Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek()),
+            Base64UrlSafeEncoder::encode($iv),
+            Base64UrlSafeEncoder::encode($cipherText),
+            Base64UrlSafeEncoder::encode($at)
         );
     }
 
@@ -187,15 +142,10 @@ class JweSerializer
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
         $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
 
-        $jweAlg->decryption($this->key, $jweAlg->deserialize($this->b64Cek));
-        $this->cek = $jweAlg->getRaw();
-        $this->iv = Base64UrlSafeEncoder::decode($this->b64Iv);
-
+        $cek = $jweAlg->decryption($this->key, $this->cek);
         $cipherText = Base64UrlSafeEncoder::decode($this->b64CipherText);
-        $this->verifyAt($this->b64At, $cipherText);
 
-        $jweEnc->decryption($cipherText, $this->cek, $this->iv);
-        $this->target = $jweEnc->getRaw();
+        $this->target = $jweEnc->verifyAndDecrypt($cek, $this->iv, $cipherText, $this->b64header, $this->b64At);
     }
 
     public function getJoseHeader()

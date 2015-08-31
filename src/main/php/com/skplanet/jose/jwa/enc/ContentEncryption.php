@@ -35,7 +35,6 @@ use com\skplanet\jose\util\Base64UrlSafeEncoder;
  */
 class ContentEncryption
 {
-    protected $raw;
     protected $keyLength = 0;
     protected $ivLength = 0;
 
@@ -46,34 +45,14 @@ class ContentEncryption
         return $this;
     }
 
-    public function getKeyLength()
-    {
-        return $this->keyLength;
-    }
-
     public function getIvLength()
     {
         return $this->ivLength;
     }
 
-    public function generateRandomKey($size)
+    public function generateRandomIv()
     {
-        return crypt_random_string($size);
-    }
-
-    public function getRaw()
-    {
-        return $this->raw;
-    }
-
-    public function serialize()
-    {
-        if (is_null($this->raw))
-        {
-            throw new \InvalidArgumentException("encrypt/decrypt raw is null");
-        }
-
-        return Base64UrlSafeEncoder::encode($this->raw);
+        return crypt_random_string($this->ivLength);
     }
 
     public function getContentEncryptionKeyGenerator()

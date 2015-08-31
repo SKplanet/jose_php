@@ -8,6 +8,10 @@
 
 namespace com\skplanet\jose\jwa\enc;
 
+use com\skplanet\jose\util\Base64UrlSafeEncoder;
+use com\skplanet\jose\util\ByteUtils;
+
+
 /**
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,43 +41,68 @@ class Aes128Hmac256Encryption extends ContentEncryption
         parent::__construct(32, 16);
     }
 
-    /**
-     * @param $payload plain
-     * @param $key
-     * @param $iv
-     * @return String encryption content (not base64url encoding)
-     */
-    public function encryption($payload, $key, $iv)
+    public function encryptAndSign($cek, $iv, $payload, $aad)
     {
-        $secret = substr($key, 16, 16);
+        $iv = !is_null($iv)?$iv:$this->generateRandomIv();
+        $hmacKey = substr($cek, 0, 16);
+        $encKey = substr($cek, 16, 16);
 
-        $cipher = new \Crypt_AES(CRYPT_MODE_CBC);
-        $cipher->setKey($secret);
-        $cipher->setIV($iv);
-        $cipher->enablePadding();
+        $cipherText = $this->encryption($encKey, $iv, $payload);
+        $at = $this->sign($hmacKey, $iv, $cipherText, $aad);
 
-        $this->raw = $cipher->encrypt($payload);
-
-        return $this;
+        return new JweEncResult($cipherText, $at, $iv);
     }
 
-    /**
-     * @param $cipherText encrypted content (not base64url encoding)
-     * @param $key
-     * @param $iv
-     * @return String decrypted content
-     */
-    public function decryption($cipherText, $key, $iv)
+    public function verifyAndDecrypt($cek, $iv, $cipherText, $aad, $expected)
     {
-        $secret = substr($key, 16, 16);
+        $hmacKey = substr($cek, 0, 16);
+        $encKey = substr($cek, 16, 16);
 
+        $this->verifyAuthenticationTag($hmacKey, $iv, $cipherText, $aad, $expected);
+        return $this->decryption($encKey, $iv, $cipherText);
+    }
+
+    private function decryption($key, $iv, $cipherText)
+    {
         $cipher = new \Crypt_AES(CRYPT_MODE_CBC);
-        $cipher->setKey($secret);
+        $cipher->setKey($key);
         $cipher->setIV($iv);
         $cipher->enablePadding();
 
-        $this->raw = $cipher->decrypt($cipherText);
+        $payload = $cipher->decrypt($cipherText);
 
-        return $this;
+        return $payload;
+    }
+
+    private function verifyAuthenticationTag($hmacKey, $iv, $cipherText, $aad, $expected)
+    {
+        $actual = Base64UrlSafeEncoder::encode($this->sign($hmacKey, $iv, $cipherText, $aad));
+
+        if ($actual!= $expected)
+            throw new InvalidAuthenticationTagException('not match : '.$actual);
+    }
+
+    private function encryption($key, $iv, $src)
+    {
+        $cipher = new \Crypt_AES(CRYPT_MODE_CBC);
+        $cipher->setKey($key);
+        $cipher->setIV($iv);
+        $cipher->enablePadding();
+
+        return $cipher->encrypt($src);
+    }
+
+    private function sign($key, $iv, $cipherText, $aad)
+    {
+        $al = $this->getAl($aad);
+        $at = substr(hash_hmac('sha256', implode('', array($aad, $iv, $cipherText, $al)), $key, true), 0, 16);
+
+        return $at;
+    }
+
+    private function getAl($aad)
+    {
+        $aadLen = strlen($aad)*8;
+        return ByteUtils::convert2UnsignedLongBE($aadLen);
     }
 }
