@@ -5,7 +5,7 @@ PHP 5.4, 5.6에서 테스트 완료
 ## 설치
 composer를 사용하여 install을 할 수 있습니다. / [packagist](https://packagist.org/packages/syruppay/jose):
 ```
-"syruppay/jose": "v0.0.1"
+"syruppay/jose": "v0.0.3"
 ```
 
 ## JWE 지원 알고리즘
