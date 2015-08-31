@@ -36,11 +36,11 @@ class Aes256KeyWrap extends AesKeyWrap
 {
     public function wrap($key, $src)
     {
-        $this->raw = A256KW::wrap($key, $src);
+        return A256KW::wrap($key, $src);
     }
 
     function unwrap($key, $src)
     {
-        $this->raw = A256KW::unwrap($key, $src);
+        return A256KW::unwrap($key, $src);
     }
 }

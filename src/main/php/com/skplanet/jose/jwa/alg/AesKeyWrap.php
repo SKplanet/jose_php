@@ -36,58 +36,37 @@ use com\skplanet\jose\util\Base64UrlSafeEncoder;
 abstract class AesKeyWrap
 {
     private $keyLength;
-    protected $raw;   //hex
 
-    public function __construct($keylength)
+    public function __construct($keyLength)
     {
-        $this->keyLength = $keylength;
+        $this->keyLength = $keyLength;
     }
-
-    public function encryption($key, $cekGenerator)
-    {
-        $this->isValidKeyLength($key);
-        $src = $cekGenerator->generateRandomKey();
-        $this->wrap($key, $src);
-
-        return new JweAlgResult($src, $this->raw);
-    }
-
-    abstract public function wrap($key, $src);
-
-    public function decryption($key, $src)
-    {
-        $this->isValidKeyLength($key);
-        $this->unwrap($key, $src);
-    }
-
-    abstract function unwrap($key, $src);
 
     private function isValidKeyLength($key)
     {
         if ($this->keyLength != strlen($key))
         {
-            throw new \InvalidArgumentException('JWE key must be '.$this->keyLength.' bytes');
+            throw new \InvalidArgumentException('JWE key must be '.$this->keyLength.' bytes. Yours key '.strlen($key).' bytes.');
         }
     }
 
-    public function serialize()
+    public function encryption($key, $cekGenerator)
     {
-        if (!is_null($this->raw))
-            return Base64UrlSafeEncoder::encode($this->raw);
-        else
-            return null;
+        $this->isValidKeyLength($key);
+        $cek = $cekGenerator->generateRandomKey();
+        $wrapCek = $this->wrap($key, $cek);
+
+        return new JweAlgResult($cek, $wrapCek);
     }
 
-    public function deserialize($src)
+    public function decryption($key, $wrapCek)
     {
-        if (!is_null($src))
-            return Base64UrlSafeEncoder::decode($src);
-        else
-            return null;
+        $this->isValidKeyLength($key);
+        $cek = $this->unwrap($key, $wrapCek);
+
+        return $cek;
     }
 
-    public function getRaw()
-    {
-        return $this->raw;
-    }
+    abstract function unwrap($key, $src);
+    abstract public function wrap($key, $src);
 }

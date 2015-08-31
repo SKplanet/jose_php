@@ -37,11 +37,11 @@ class Aes128KeyWrap extends AesKeyWrap
 {
     public function wrap($key, $src)
     {
-        $this->raw = A128KW::wrap($key, $src);
+        return A128KW::wrap($key, $src);
     }
 
     function unwrap($key, $src)
     {
-        $this->raw = A128KW::unwrap($key, $src);
+        return A128KW::unwrap($key, $src);
     }
 }
