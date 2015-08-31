@@ -8,6 +8,16 @@ composer를 사용하여 install을 할 수 있습니다. / [packagist](https://packagist.or
 "syruppay/jose": "v0.0.3"
 ```
 
+## 버전 히스토리
+```
+1. 0.0.1
+- JWE : A128KW, A128CBC-HS246, JWS : HS256 처리 추가
+2. 0.0.2
+- JWE : A256KW추가
+3. 0.0.3
+- JWE : CEK 처리 구조 변경, AAD 처리 구조 변경
+```
+
 ## JWE 지원 알고리즘
 ```
 alg : A128KW, A256KW
