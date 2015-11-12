@@ -3,8 +3,9 @@
   "type": "library",
   "description": "Jose PHP library for SyrupPay merchant",
   "keywords": [
-    "SyrupPay",
-    "Jose",
+    "syruppay",
+    "syrup",
+    "JOSE",
     "A128KW",
     "HS256",
     "A128CBC-HS256",

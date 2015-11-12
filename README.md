@@ -8,7 +8,7 @@ JOSE 규격은 SyrupPay 결제 데이터 암복호화 및 AccessToken 발행 등에 사용되며 Syru
 
 ## Installation
 ### composer ([packagist](https://packagist.org/packages/syruppay/jose))
-`"syruppay/jose": "v0.0.3"`
+`"syruppay/jose": "v1.0.0"`
 
 ## Usage
 ###JWE
@@ -19,36 +19,43 @@ require_once('../../../vendor/autoload.php');
 
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\Jwa;
-use com\skplanet\jose\jwe\JweSerializer;
-use com\skplanet\jose\JoseActionType;
+use com\skplanet\jose\Jose;
+use com\skplanet\jose\JoseBuilders;
 use com\skplanet\jose\JoseHeaderSpec;
 
-//암호화 할 데이터
-$src = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
-//kid : SyrupPay가 발급하는 iss
-$iss = 'sample';
-//SyrupPay가 발급하는 secret
-$key = '1234567890123456';
+//암호화 데이터
+$payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
+//SyrupPay 발급 iss
+$iss = 'sample';                                    
+//SyrupPay 발급 암복호화 키 (AES256 KeyWrap 기준)
+$key = '12345678901234561234567890123456';          
 
 /*
  * JWE header 규격
- * alg : key wrap encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
- * enc : content encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
+ * JoseHeaderSpec::ALG : key wrap encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
+ * JoseHeaderSpec::ENC : content encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
  */
-$jweHeader = new JoseHeader();
-$jweHeader->setAlg(Jwa::A128KW);
-$jweHeader->setEnc(Jwa::A128CBC_HS256);
-$jweHeader->setKid($iss);
+$jose = new Jose();
+$jweToken = $jose->configuration(
+    JoseBuilders::JsonEncryptionCompactSerializationBuilder()
+        ->header(new JoseHeader(
+            array(JoseHeaderSpec::ALG => Jwa::A256KW,
+                JoseHeaderSpec::ENC => Jwa::A128CBC_HS256,
+                JoseHeaderSpec::KID => $iss)))
+        ->payload($payload)
+        ->key($key)
+)->serialization();
 
-//1. encryption
-$jwe = new JweSerializer(JoseActionType::SERAILIZE, $jweHeader, $src, $key);
-$enc = $jwe->compactSeriaization();
+var_dump($jweToken);
 
-//2. verify and decryption
-$jwe = new JweSerializer(JoseActionType::DESERAILIZE, $enc, $key);
-$dec = $jwe->compactSeriaization();
+$jose = new Jose();
+$payload = $jose->configuration(
+    JoseBuilders::compactDeserializationBuilder()
+        ->serializedSource($jweToken)
+        ->key($key)
+)->deserialization();
 
-var_dump($dec);
+var_dump($payload);
 ```
 
 ###JWS
@@ -59,35 +66,42 @@ require_once('../../../vendor/autoload.php');
 
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\Jwa;
-use com\skplanet\jose\jws\JwsSerializer;
-use com\skplanet\jose\JoseActionType;
+use com\skplanet\jose\Jose;
+use com\skplanet\jose\JoseBuilders;
 use com\skplanet\jose\JoseHeaderSpec;
 
-//서명 할 데이터
-$src = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
-//kid : SyrupPay가 발급하는 iss
-$iss = 'sample';
-//SyrupPay가 발급하는 secret
-$key = '1234567890123456';
+//Sign 데이터
+$payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
+//SyrupPay 발급 iss
+$iss = 'sample';                                    
+//SyrupPay 발급 sing 키 (HmacSha256 기준)
+$key = '12345678901234561234567890123456';   
 
 /*
  * JWS header 규격
- * alg : signature algorithm. 아래 Supported JOSE encryption algorithms 참조
+ * JoseHeaderSpec::ALG : signature algorithm. 아래 Supported JOSE encryption algorithms 참조
  */
-$jwsHeader = new JoseHeader();
-$jwsHeader->setHeader(JoseHeaderSpec::TYP, 'JWT');
-$jwsHeader->setAlg(Jwa::HS256);
-$jwsHeader->setKid('sample');
+$jose = new Jose();
+$jwsToken = $jose->configuration(
+    JoseBuilders::JsonSignatureCompactSerializationBuilder()
+        ->header(new JoseHeader(
+            array(JoseHeaderSpec::ALG => Jwa::HS256,
+                JoseHeaderSpec::TYP => 'JWT',
+                JoseHeaderSpec::KID => $iss)))
+        ->payload($payload)
+        ->key($key)
+)->serialization();
 
-//1. sign
-$jws = new JwsSerializer(JoseActionType::SERAILIZE, $jwsHeader, $src, $key);
-$enc = $jws->compactSeriaization();
+var_dump($jwsToken);
 
-//2. verify
-$jws = new JwsSerializer(JoseActionType::DESERAILIZE, $enc, $key);
-$dec = $jws->compactSeriaization();
+$jose = new Jose();
+$claims = $jose->configuration(
+    JoseBuilders::compactDeserializationBuilder()
+    ->serializedSource($jweToken)
+    ->key($key)
+)->deserialization();
 
-var_dump($dec);
+var_dump($claims);
 
 ```
 

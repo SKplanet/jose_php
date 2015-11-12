@@ -8,55 +8,38 @@
 
 namespace com\skplanet\jose;
 
-
 use com\skplanet\jose\exception\UnSupportedJoseAlgorithmException;
 use com\skplanet\jose\jwa\Jwa;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
-/**
- * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * Class JoseHeader
- * @package com\skplanet\jose
- */
 class JoseHeader
 {
-    private $supported = array();
-
     private $header = array();
 
     public function __construct()
     {
-        $this->supported = array(
-            'ALG' => array(
-                Jwa::A128KW => true,
-                Jwa::HS256 => true,
-                Jwa::A256KW => true
-                ),
-            'ENC' => array(
-                Jwa::A128CBC_HS256 => true)
-        );
+        $argNum = func_num_args();
+        $arg = func_get_args();
+        if ($argNum == 1 and is_array($arg[0]))
+        {
+            foreach($arg[0] as $key => $value)
+            {
+                $this->setHeader($key, $value);
+            }
+        }
+        else if ($argNum != 0)
+        {
+            throw new \InvalidArgumentException('Usage : new JoseHeader(array(JoseHeaderSpec => $value)');
+        }
     }
 
     public function setAlg($alg)
     {
-        $this->isSupportAlg($alg);
+        if (!JoseSupportAlgorithm::isSupported($alg))
+        {
+            throw new UnSupportedJoseAlgorithmException("unknown header 'alg' value : ".$alg);
+        }
+
         $this->header[JoseHeaderSpec::ALG] = $alg;
         return $this;
     }
@@ -68,7 +51,11 @@ class JoseHeader
 
     public function setEnc($enc)
     {
-        $this->isSupportEnc($enc);
+        if (!JoseSupportEncryption::isSupported($enc))
+        {
+            throw new UnSupportedJoseAlgorithmException("unknown header 'enc' value : ".$enc);
+        }
+
         $this->header[JoseHeaderSpec::ENC] = $enc;
         return $this;
     }
@@ -112,22 +99,63 @@ class JoseHeader
 
     public function deserialize($src)
     {
-        $this->header = json_decode(Base64UrlSafeEncoder::decode($src), true);
+        list($headerToken, $rest) = array_pad(explode(".", $src, 2), 2, null);
+        $this->header = json_decode(Base64UrlSafeEncoder::decode($headerToken), true);
     }
 
-    private function isSupportAlg($alg)
+    public function getJoseMethod()
     {
-        if (!array_key_exists($alg, $this->supported['ALG']) || !$this->supported['ALG'][$alg])
+        if (JoseSupportAlgorithm::isJWESupported($this->getAlg()))
         {
-            throw new UnSupportedJoseAlgorithmException("unknown header 'alg' value : ".$alg);
+            return JoseMethod::JWE;
         }
-    }
-
-    private function isSupportEnc($enc)
-    {
-        if (!array_key_exists($enc, $this->supported['ENC']) || !$this->supported['ENC'][$enc])
+        else if (JoseSupportAlgorithm::isJWSSupported($this->getAlg()))
         {
-            throw new UnSupportedJoseAlgorithmException("unknown header 'enc' value : ".$enc);
+            return JoseMethod::JWS;
+        }
+        else
+        {
+            throw new UnSupportedJoseAlgorithmException($this->getAlg().' is not supported.');
         }
     }
 }
+
+class JoseSupportAlgorithm
+{
+    private static $jweSupportAlg = array(
+        Jwa::A128KW,
+        Jwa::A256KW
+    );
+
+    private static $jwsSupportAlg = array(
+        Jwa::HS256
+    );
+
+    public static function isSupported($alg)
+    {
+        return self::isJWESupported($alg) or self::isJWSSupported($alg);
+    }
+
+    public static function isJWESupported($alg)
+    {
+        return in_array($alg, self::$jweSupportAlg);
+    }
+
+    public static function isJWSSupported($alg)
+    {
+        return in_array($alg, self::$jwsSupportAlg);
+    }
+}
+
+class JoseSupportEncryption
+{
+    private static $jweSupportEnc = array(
+        Jwa::A128CBC_HS256
+    );
+
+    public static function isSupported($enc)
+    {
+        return in_array($enc, self::$jweSupportEnc);
+    }
+}
+
