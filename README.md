@@ -106,6 +106,11 @@ var_dump($claims);
 ```
 
 ## Supported JOSE encryption algorithms
+## JWE
+JWE는 입력한 payload를 아래에서 지원하는 alg와 enc에서 명시한 알고리즘으로 암호화합니다. 
+키워드 alg는 발행된(기 공유된) key를 이용하여 내부적으로 random하게 생성된 CEK(content encryption key)를 암호화하는 알고리즘이며, 
+키워드 enc는 내부적으로 생성된 CEK를 사용하여 명시한 암호화 알고리즘으로 payload를 암호화하며 
+header, CEK, iv, payload의 integrity data를 생성합니다.
 
 ### "alg" (Algorithm) Header Parameter Values For JWE
 alg Param Value|Key Management Algorithm
@@ -117,6 +122,10 @@ A256KW|AES Key Wrap with default initial value using 256 bit key
 enc Param Value|Content Encryption Algorithm
 -------------|------
 A128CBC-HS256|AES_128_CBC_HMAC_SHA_256 authenticated encryption algorithm
+
+## JWS
+JWS는 키워드 alg에서 명시한 알고리즘으로 입력한 payload의 integrity를 보장합니다.
+alg는 발행된(기 공유된) key를 이용하여 integrity data를 생성합니다.
 
 ### "alg" (Algorithm) Header Parameter Values for JWS
 alg Param Value|Digital Signature or MAC Algorithm
