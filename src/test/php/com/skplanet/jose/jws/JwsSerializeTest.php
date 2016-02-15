@@ -26,7 +26,7 @@ class JwsSerializeTest extends \PHPUnit_Framework_TestCase
         $header = new JoseHeader();
         $header->setHeader(JoseHeaderSpec::TYP, 'JWT');
         $header->setAlg(Jwa::HS256);
-        $jws = new JwsSerializer(JoseActionType::SERAILIZE, $header, $payload, $key);
+        $jws = new JwsSerializer(JoseActionType::SERIALIZE, $header, $payload, $key);
         $actual = $jws->compactSeriaization();
 
         $this->assertEquals($expected, $actual);
@@ -38,7 +38,7 @@ class JwsSerializeTest extends \PHPUnit_Framework_TestCase
         $src = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLCAiZXhwIjoxMzAwODE5MzgwLCAiaHR0cDovL2V4YW1wbGUuY29tL2lzX3Jvb3QiOnRydWV9.yyo3y75o_kyTXfccX9iYY7agjAAYLlkVpR2n15-Gz_A';
         $key = 'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow';
 
-        $jws = new JwsSerializer(JoseActionType::DESERAILIZE, $src, $key);
+        $jws = new JwsSerializer(JoseActionType::DESERIALIZE, $src, $key);
         $actual = $jws->compactSeriaization();
 
         $this->assertEquals($expected, $actual);

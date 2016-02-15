@@ -25,7 +25,7 @@ class JweDeserializerTest extends PHPUnit_Framework_TestCase
         $key = Base64UrlSafeEncoder::decode("GawgguFyGrWKav7AX4VKUg");
         $src = 'eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.AxY8DCtDaGlsbGljb3RoZQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.U0m_YmjN04DJvceFICbCVQ';
 
-        $jweSerialize = new JweSerializer(JoseActionType::DESERAILIZE, $src, $key);
+        $jweSerialize = new JweSerializer(JoseActionType::DESERIALIZE, $src, $key);
         $joseHeader = $jweSerialize->getJoseHeader();
 
         $this->assertEquals(Jwa::A128KW, $joseHeader->getAlg());

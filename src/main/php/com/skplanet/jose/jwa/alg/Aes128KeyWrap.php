@@ -9,7 +9,7 @@
 namespace com\skplanet\jose\jwa\alg;
 
 
-use AESKW\A128KW;
+use com\skplanet\jose\jwa\crypto\A128KW;
 
 /**
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,11 +37,13 @@ class Aes128KeyWrap extends AesKeyWrap
 {
     public function wrap($key, $src)
     {
-        return A128KW::wrap($key, $src);
+        $aeskw = new A128KW();
+        return $aeskw->wrap($key, $src);
     }
 
     function unwrap($key, $src)
     {
-        return A128KW::unwrap($key, $src);
+        $aeskw = new A128KW();
+        return $aeskw->unwrap($key, $src);
     }
 }

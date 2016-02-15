@@ -80,7 +80,7 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $joseHeader->setAlg(Jwa::A128KW);
         $joseHeader->setEnc(Jwa::A128CBC_HS256);
 
-        $obj = new JweSerializer(JoseActionType::SERAILIZE, $joseHeader, $src, $key);
+        $obj = new JweSerializer(JoseActionType::SERIALIZE, $joseHeader, $src, $key);
         $obj->setUserEncryptionKey($cek, $iv);
 
         $actual = $obj->compactSeriaization();
@@ -100,7 +100,7 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $key = '1234567890123456';
         $src = 'fruit';
 
-        $obj = new JweSerializer(JoseActionType::SERAILIZE, $joseHeader, $src, $key);
+        $obj = new JweSerializer(JoseActionType::SERIALIZE, $joseHeader, $src, $key);
         $actual = $obj->compactSeriaization();
 
         echo $actual;
