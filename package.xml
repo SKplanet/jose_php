@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "package.dtd">
+<package version="1.0">
+    <name>syruppay_jose</name>
+    <summary>test</summary>
+    <description>
+        PHP? ??? JOSE(Javascript Object Signing and Encryption) - RFC 7516, RFC 7515 ?????. JOSE ??? SyrupPay ?? ??? ???? ? AccessToken ?? ?? ???? SyrupPay ???? ???? ???? ?? ???? ?????? ???????.
+    </description>
+    <maintainers>
+        <maintainer>
+            <email>byeongchan.park@sk.com</email>
+            <name>byeongchan park</name>
+            <user>byeongchan</user>
+            <role>lead</role>
+        </maintainer>
+    </maintainers>
+    <license>MIT</license>
+    <release>
+        <version>1.0.2</version>
+        <date>2016-08-25</date>
+        <state>stable</state>
+        <notes>
+            see https://github.com/skplanet/jose_php
+        </notes>
+        <filelist>
+            <dir name="/">
+                <dir name="src/main/php/com/skplanet/jose">
+                    <file name="DeserializationBuilder.php" role="php"/>
+                    <file name="Jose.php" role="php"/>
+                    <file name="JoseAction.php" role="php"/>
+                    <file name="JoseActionType.php" role="php"/>
+                    <file name="JoseBuilders.php" role="php"/>
+                    <file name="JoseCompactBuilder.php" role="php"/>
+                    <file name="JoseHeader.php" role="php"/>
+                    <file name="JoseHeaderSpec.php" role="php"/>
+                    <file name="JoseMethod.php" role="php"/>
+                    <file name="JoseSerializeType.php" role="php"/>
+                    <file name="SerializationBuilder.php" role="php"/>
+                    <file name="SerializeAction.php" role="php"/>
+                    <dir name="exception">
+                        <file name="InvalidAuthenticationTagException.php" role="php"/>
+                        <file name="InvalidSignatureException.php" role="php"/>
+                        <file name="UnSupportedJoseAlgorithmException.php" role="php"/>
+                        <file name="UnsupportedOperationException.php" role="php"/>
+                    </dir>
+                    <dir name="jwa">
+                        <dir name="alg">
+                            <file name="Aes128KeyWrap.php" role="php"/>
+                            <file name="Aes256KeyWrap.php" role="php"/>
+                            <file name="AesKeyWrap.php" role="php"/>
+                            <file name="HmacSha256Signature.php" role="php"/>
+                            <file name="JweAlgResult.php" role="php"/>
+                            <file name="Signature.php" role="php"/>
+                        </dir>
+                        <dir name="crypto">
+                            <file name="A128KW.php" role="php"/>
+                            <file name="A192KW.php" role="php"/>
+                            <file name="A256KW.php" role="php"/>
+                            <file name="AESKW.php" role="php"/>
+                        </dir>
+                        <dir name="enc">
+                            <file name="Aes128Hmac256Encryption.php" role="php"/>
+                            <file name="ContentEncryption.php" role="php"/>
+                            <file name="ContentEncryptKeyGenerator.php" role="php"/>
+                            <file name="JweEncResult.php" role="php"/>
+                            <file name="Aes128Hmac256Encryption.php" role="php"/>
+                        </dir>
+                        <file name="Jwa.php" role="php"/>
+                        <file name="JwaFactory.php" role="php"/>
+                    </dir>
+                    <dir name="jwe">
+                        <file name="JweSerializer.php" role="php"/>
+                    </dir>
+                    <dir name="jws">
+                        <file name="JwsSerializer.php" role="php"/>
+                    </dir>
+                    <dir name="util">
+                        <file name="Base64UrlSafeEncoder.php" role="php"/>
+                        <file name="ByteUtils.php" role="php"/>
+                        <file name="StringUtils.php" role="php"/>
+                    </dir>
+                </dir>
+            </dir>
+        </filelist>
+        <deps>
+            <dep type="php" rel="ge" version="5.3.3"/>
+            <!--
+            pear channel-discover phpseclib.sourceforge.net
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_AES</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_Base</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_Blowfish</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_DES</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_Hash</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_RC4</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_RSA</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_Random</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_Rijndael</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_TripleDES</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Crypt_Twofish</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/File_ANSI</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/File_ASN1</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/File_X509</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Math_BigInteger</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Net_SCP</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Net_SFTP</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Net_SSH1</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/Net_SSH2</dep>
+            <dep type="pkg" rel="le" version="1.0.3">phpseclib/System_SSH_Agent</dep>
+            -->
+        </deps>
+    </release>
+</package>
