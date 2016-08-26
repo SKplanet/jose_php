@@ -26,6 +26,10 @@ use com\skplanet\jose\exception\UnsupportedOperationException;
 class Jose implements SerializeAction
 {
     private $joseActionType;
+
+    /**
+     * @var com/skplanet/jose/JoseAction
+     */
     private $joseAction;
 
     public function __construct()
@@ -45,14 +49,14 @@ class Jose implements SerializeAction
     {
         if ($this->joseActionType == JoseActionType::DESERIALIZE)
             throw new UnsupportedOperationException("configuration type is deserialize");
-        return $this->joseAction->compactSeriaization();
+        return $this->joseAction->compactSerialization();
     }
 
     function deserialization()
     {
         if ($this->joseActionType == JoseActionType::SERIALIZE)
             throw new UnsupportedOperationException("configuration type is serialize");
-        return $this->joseAction->compactSeriaization();
+        return $this->joseAction->compactDeserialization();
     }
 
     function getJoseHeader()

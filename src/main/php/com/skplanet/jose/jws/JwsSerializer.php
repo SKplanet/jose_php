@@ -21,12 +21,13 @@
 
 namespace com\skplanet\jose\jws;
 
+use com\skplanet\jose\JoseAction;
 use com\skplanet\jose\JoseActionType;
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
-class JwsSerializer
+class JwsSerializer implements JoseAction
 {
     private $actionType;
 
@@ -63,25 +64,7 @@ class JwsSerializer
         }
     }
 
-    public function compactSeriaization()
-    {
-        if ($this->actionType == JoseActionType::SERIALIZE)
-        {
-            $this->serialize();
-            return $this->target;
-        }
-        else if ($this->actionType == JoseActionType::DESERIALIZE)
-        {
-            $this->deserialize();
-            return $this->target;
-        }
-        else
-        {
-            throw new \BadMethodCallException('Unknown action type');
-        }
-    }
-
-    private function serialize()
+    public function compactSerialization()
     {
         $this->b64header = $this->joseHeader->serialize();
         $this->b64Payload = Base64UrlSafeEncoder::encode($this->payload);
@@ -91,19 +74,15 @@ class JwsSerializer
         $jwsAlg->sign(sprintf("%s.%s", $this->b64header, $this->b64Payload), $this->key);
         $this->b64Signature = $jwsAlg->serialize();
 
-        $this->target = sprintf("%s.%s.%s",
-            $this->b64header,
-            $this->b64Payload,
-            $this->b64Signature
-        );
+        return sprintf("%s.%s.%s", $this->b64header, $this->b64Payload, $this->b64Signature);
     }
 
-    private function deserialize()
+    public function compactDeserialization()
     {
         $jwsAlg = JwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
         $jwsAlg->verify(sprintf("%s.%s", $this->b64header, $this->b64Payload), $this->b64Signature, $this->key);
 
-        $this->target = Base64UrlSafeEncoder::decode($this->b64Payload);
+        return Base64UrlSafeEncoder::decode($this->b64Payload);
     }
 
     public function getJoseHeader()

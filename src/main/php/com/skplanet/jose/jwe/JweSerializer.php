@@ -21,12 +21,13 @@
 
 namespace com\skplanet\jose\jwe;
 
+use com\skplanet\jose\JoseAction;
 use com\skplanet\jose\JoseActionType;
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
-class JweSerializer
+class JweSerializer implements JoseAction
 {
     private $actionType;
 
@@ -36,7 +37,6 @@ class JweSerializer
     private $cek;
     private $iv;
 
-    private $target;
     private $payload;
 
     private $b64header, $b64Cek, $b64Iv, $b64CipherText, $b64At;
@@ -73,33 +73,12 @@ class JweSerializer
         $this->iv = $iv;
     }
 
-    public function getAad()
+    private function getAad()
     {
         return $this->joseHeader->serialize();
     }
 
-    public function compactSeriaization()
-    {
-        if ($this->actionType == JoseActionType::SERIALIZE)
-        {
-            $this->serialize();
-            return $this->target;
-        }
-        else if ($this->actionType == JoseActionType::DESERIALIZE)
-        {
-            $this->deserialize();
-            return $this->target;
-        }
-        else
-        {
-            throw new \BadMethodCallException('Unknown action type');
-        }
-    }
-
-    /**
-     * @param $payload
-     */
-    private function serialize()
+    public function compactSerialization()
     {
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
         $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
@@ -116,7 +95,7 @@ class JweSerializer
         $at = $jweEncResult->getAt();
         $iv = $jweEncResult->getIv();
 
-        $this->target = sprintf("%s.%s.%s.%s.%s",
+        return sprintf("%s.%s.%s.%s.%s",
             $this->joseHeader->serialize(),
             Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek()),
             Base64UrlSafeEncoder::encode($iv),
@@ -125,7 +104,7 @@ class JweSerializer
         );
     }
 
-    private function deserialize()
+    public function compactDeserialization()
     {
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
         $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
@@ -133,7 +112,7 @@ class JweSerializer
         $cek = $jweAlg->decryption($this->key, $this->cek);
         $cipherText = Base64UrlSafeEncoder::decode($this->b64CipherText);
 
-        $this->target = $jweEnc->verifyAndDecrypt($cek, $this->iv, $cipherText, $this->b64header, $this->b64At);
+        return $jweEnc->verifyAndDecrypt($cek, $this->iv, $cipherText, $this->b64header, $this->b64At);
     }
 
     public function getJoseHeader()
