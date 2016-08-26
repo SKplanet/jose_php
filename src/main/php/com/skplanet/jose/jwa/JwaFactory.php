@@ -26,8 +26,19 @@ use com\skplanet\jose\jwa\alg\Aes256KeyWrap;
 use com\skplanet\jose\jwa\alg\HmacSha256Signature;
 use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
 
+/**
+ * 입력받은 파라미터에 따라 암호화/서명 클래스를 반환하는 factory class
+ *
+ * @package com\skplanet\jose\jwa
+ */
 class JwaFactory
 {
+    /**
+     * 입력받은 알고리즘에 따라 JWE key encryption 클래스를 반환한다.
+     *
+     * @param $alg Jwa
+     * @return Aes128KeyWrap|Aes256KeyWrap
+     */
     public static function getJweAlgorithm($alg)
     {
         if ($alg == Jwa::A128KW)
@@ -40,6 +51,12 @@ class JwaFactory
         }
     }
 
+    /**
+     * 입력받은 알고리즘에 따라 JWE content encryption, sign 클래스를 반환한다.
+     *
+     * @param $enc Jwa
+     * @return Aes128Hmac256Encryption
+     */
     public static function getJweEncryptionAlgorithm($enc)
     {
         if ($enc == Jwa::A128CBC_HS256)
@@ -48,6 +65,12 @@ class JwaFactory
         }
     }
 
+    /**
+     * 입력받은 알고리즘에 따라 JWS signature 클래스를 반환한다.
+     *
+     * @param $alg Jwa
+     * @return HmacSha256Signature
+     */
     public static function getJwsAlgorithm($alg)
     {
         if ($alg == Jwa::HS256)

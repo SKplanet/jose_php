@@ -21,6 +21,11 @@
 
 namespace com\skplanet\jose\jwa;
 
+/**
+ * JWA 알고리즘 정의 상수 클래스
+ *
+ * @package com\skplanet\jose\jwa
+ */
 class Jwa
 {
     /**
