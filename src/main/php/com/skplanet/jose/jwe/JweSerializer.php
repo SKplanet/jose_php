@@ -22,15 +22,12 @@
 namespace com\skplanet\jose\jwe;
 
 use com\skplanet\jose\JoseAction;
-use com\skplanet\jose\JoseActionType;
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
 class JweSerializer implements JoseAction
 {
-    private $actionType;
-
     private $joseHeader;
     private $key;
 
@@ -41,30 +38,33 @@ class JweSerializer implements JoseAction
 
     private $b64header, $b64Cek, $b64Iv, $b64CipherText, $b64At;
 
-    public function __construct()
+    public function setJoseHeader($joseHeader)
     {
-        $args = func_get_args();
-        $this->actionType = $args[0];
-        if ($args[0] == JoseActionType::SERIALIZE)
-        {
-            $this->joseHeader = $args[1];
-            $this->payload = $args[2];
-            $this->key = $args[3];
-        }
-        else if ($args[0] == JoseActionType::DESERIALIZE)
-        {
-            $this->paylod = $args[1];
-            $this->key = $args[2];
+        $this->joseHeader = $joseHeader;
+    }
 
-            list($this->b64header, $this->b64Cek, $this->b64Iv, $this->b64CipherText, $this->b64At) =
-                explode('.', $this->paylod);
+    public function setPayload($payload)
+    {
+        $this->payload = $payload;
+    }
 
-            $this->joseHeader = new JoseHeader();
-            $this->joseHeader->deserialize($this->b64header);
+    public function setKey($key)
+    {
+        $this->key = $key;
+    }
 
-            $this->cek = Base64UrlSafeEncoder::decode($this->b64Cek);
-            $this->iv = Base64UrlSafeEncoder::decode($this->b64Iv);
-        }
+    public function setParse($jweValue)
+    {
+        $this->payload = $jweValue;
+
+        list($this->b64header, $this->b64Cek, $this->b64Iv, $this->b64CipherText, $this->b64At) =
+            explode('.', $jweValue);
+
+        $this->joseHeader = new JoseHeader();
+        $this->joseHeader->deserialize($this->b64header);
+
+        $this->cek = Base64UrlSafeEncoder::decode($this->b64Cek);
+        $this->iv = Base64UrlSafeEncoder::decode($this->b64Iv);
     }
 
     public function setUserEncryptionKey($cek, $iv)

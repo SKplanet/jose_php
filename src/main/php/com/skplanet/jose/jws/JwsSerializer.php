@@ -22,15 +22,12 @@
 namespace com\skplanet\jose\jws;
 
 use com\skplanet\jose\JoseAction;
-use com\skplanet\jose\JoseActionType;
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
 class JwsSerializer implements JoseAction
 {
-    private $actionType;
-
     private $joseHeader;
     private $payload;
     private $key;
@@ -39,29 +36,29 @@ class JwsSerializer implements JoseAction
     private $b64Payload;
     private $b64Signature;
 
-    private $target;
-
-    public function __construct()
+    public function setJoseHeader($joseHeader)
     {
-        $args = func_get_args();
-        $this->actionType = $args[0];
-        if ($args[0] == JoseActionType::SERIALIZE)
-        {
-            $this->joseHeader = $args[1];
-            $this->payload = $args[2];
-            $this->key = $args[3];
-        }
-        else if ($args[0] == JoseActionType::DESERIALIZE)
-        {
-            $this->paylod = $args[1];
-            $this->key = $args[2];
+        $this->joseHeader = $joseHeader;
+    }
 
-            list($this->b64header, $this->b64Payload, $this->b64Signature) =
-                explode('.', $this->paylod);
+    public function setPayload($payload)
+    {
+        $this->payload = $payload;
+    }
 
-            $this->joseHeader = new JoseHeader();
-            $this->joseHeader->deserialize($this->b64header);
-        }
+    public function setParse($jwsValue)
+    {
+        $this->payload = $jwsValue;
+        list($this->b64header, $this->b64Payload, $this->b64Signature) =
+            explode('.', $jwsValue);
+
+        $this->joseHeader = new JoseHeader();
+        $this->joseHeader->deserialize($this->b64header);
+    }
+
+    public function setKey($key)
+    {
+        $this->key = $key;
     }
 
     public function compactSerialization()

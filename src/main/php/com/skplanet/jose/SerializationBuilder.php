@@ -84,16 +84,22 @@ class SerializationBuilder extends JoseCompactBuilder
             case JoseSerializeType::COMPACT_SERIALIZATION:
                 if (JoseMethod::JWE == $this->joseMethod and JoseActionType::SERIALIZE == $this->joseActionType)
                 {
-                    return new JweSerializer(JoseActionType::SERIALIZE, $this->header, $this->payload, $this->key);
+                    $serializer = new JweSerializer();
                 }
                 else if (JoseMethod::JWS == $this->joseMethod and JoseActionType::SERIALIZE == $this->joseActionType)
                 {
-                    return new JwsSerializer(JoseActionType::SERIALIZE, $this->header, $this->payload, $this->key);
+                    $serializer = new JwsSerializer();
                 }
                 else
                 {
                     throw new \InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
                 }
+
+                $serializer->setJoseHeader($this->header);
+                $serializer->setPayload($this->payload);
+                $serializer->setKey($this->key);
+
+                return $serializer;
             case JoseSerializeType::JSON_SERIALIZATION:
 
             default:
