@@ -24,9 +24,21 @@ namespace com\skplanet\jose;
 use com\skplanet\jose\jwe\JweSerializer;
 use com\skplanet\jose\jws\JwsSerializer;
 
+/**
+ * JOSE serialize configuration 처리 기능 class
+ *
+ * @package com\skplanet\jose
+ */
 class SerializationBuilder extends JoseCompactBuilder
 {
+    /**
+     * @var JoseHeader
+     */
     private $header;
+
+    /**
+     * @var string (JSON)
+     */
     private $payload;
 
     public function __construct($joseMethod, $joseActionType)
@@ -35,18 +47,36 @@ class SerializationBuilder extends JoseCompactBuilder
         $this->header = new JoseHeader();
     }
 
+    /**
+     * JoseHeader를 설정한다.
+     *
+     * @param $header JoseHeader
+     * @return $this
+     */
     public function header($header)
     {
         $this->header = $header;
         return $this;
     }
 
+    /**
+     * serialize할 payload value를 설정한다.
+     *
+     * @param $payload string (JSON)
+     * @return $this
+     */
     public function payload($payload)
     {
         $this->payload = $payload;
         return $this;
     }
 
+    /**
+     * 설정된 config에 따른 JOSE 처리 class를 생성하여 반환한다.
+     *
+     * @return JoseAction json serialize 인 경우 null을 반환한다.
+     * @throws \InvalidArgumentException 유효하지 않은 JoseMethod 또는 유효하지 않은 JoseActionType
+     */
     public function create()
     {
         switch ($this->joseSerializeType)
@@ -62,7 +92,7 @@ class SerializationBuilder extends JoseCompactBuilder
                 }
                 else
                 {
-                    throw new \InvalidArgumentException("unknown JoseSerializeType and JoseActionType");
+                    throw new \InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
                 }
             case JoseSerializeType::JSON_SERIALIZATION:
 

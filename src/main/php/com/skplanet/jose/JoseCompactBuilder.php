@@ -21,14 +21,39 @@
 
 namespace com\skplanet\jose;
 
+/**
+ * JOSE build configuration 처리 기능 class
+ *
+ * @package com\skplanet\jose
+ */
 abstract class JoseCompactBuilder
 {
+    /**
+     * @var JoseMethod
+     */
     protected $joseMethod;
+
+    /**
+     * @var JoseSerializeType
+     */
     protected $joseSerializeType;
+
+    /**
+     * @var JoseActionType
+     */
     protected $joseActionType;
 
+    /**
+     * @var string JOSE encryption or sign key
+     */
     protected $key;
 
+    /**
+     * JOSE compact serialize 처리 serialization 설정 값 셋팅한다.
+     *
+     * @param $joseMethod JoseMethod
+     * @param $joseActionType JoseActionType
+     */
     protected function setSerializeCompactBuildConfig($joseMethod, $joseActionType)
     {
         $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
@@ -36,6 +61,11 @@ abstract class JoseCompactBuilder
         $this->joseActionType = $joseActionType;
     }
 
+    /**
+     * JOSE compact serialize 처리 deserialization 설정 값 셋팅한다.
+     *
+     * @param $joseActionType JoseActionType
+     */
     protected function setDeserializeCompactBuildConfig($joseActionType)
     {
         $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
@@ -43,16 +73,32 @@ abstract class JoseCompactBuilder
         $this->joseActionType = $joseActionType;
     }
 
+    /**
+     * 설정된 JoseActionType 반환한다.
+     *
+     * @return JoseActionType
+     */
     public function getJoseActionType()
     {
         return $this->joseActionType;
     }
 
+    /**
+     * JOSE encryption or sign key 설정
+     *
+     * @param $key string
+     * @return $this
+     */
     public function key($key)
     {
         $this->key = $key;
         return $this;
     }
 
+    /**
+     * 설정된 config에 따른 JOSE 처리 class를 생성하여 반환한다.
+     *
+     * @return JoseAction
+     */
     abstract public function create();
 }

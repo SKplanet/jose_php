@@ -21,6 +21,11 @@
 
 namespace com\skplanet\jose;
 
+/**
+ * JOSE에서 지원하는 header key 정의 class (일부만 지원)
+ *
+ * @package com\skplanet\jose
+ */
 class JoseHeaderSpec
 {
     const ALG = 'alg';

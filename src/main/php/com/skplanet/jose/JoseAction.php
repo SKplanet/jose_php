@@ -21,9 +21,34 @@
 
 namespace com\skplanet\jose;
 
+/**
+ * JOSE 구현 기능을 정의한다.
+ *
+ * @package com\skplanet\jose
+ */
 interface JoseAction
 {
+    /**
+     * JOSE 규격의 compact serialize를 처리한다.
+     *
+     * @return string JOSE compact serialize value
+     * @throws InvalidArgumentException 규격과 다른 암호화/서명 키 길이
+     */
     function compactSerialization();
+
+    /**
+     * JOSE 규격의 compact deserialize를 처리한다.
+     *
+     * @return string payload (JSON)
+     * @throws InvalidAuthenticationTagException JWE authentication tag verify 오류
+     * @throws InvalidSignatureException JWS signature verify 오류
+     */
     function compactDeserialization();
+
+    /**
+     * JOSE의 Header class를 반환한다.
+     *
+     * @return JoseHeader
+     */
     function getJoseHeader();
 }

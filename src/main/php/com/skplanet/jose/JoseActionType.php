@@ -21,6 +21,11 @@
 
 namespace com\skplanet\jose;
 
+/**
+ * JOSE 처리 타입 상수 정의 class
+ *
+ * @package com\skplanet\jose
+ */
 class JoseActionType
 {
     const SERIALIZE = 'SERIALIZE';

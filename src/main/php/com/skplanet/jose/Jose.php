@@ -23,20 +23,32 @@ namespace com\skplanet\jose;
 
 use com\skplanet\jose\exception\UnsupportedOperationException;
 
+/**
+ * 입력받은 configuration에 따라 JWS, JWE serialize, deserialize를 호출한다.
+ *
+ * @package com\skplanet\jose
+ */
 class Jose implements SerializeAction
 {
+    /**
+     *
+     * @var JoseActionType JOSE serialize, deserialize에 대한 구분 상수
+     */
     private $joseActionType;
 
     /**
-     * @var com/skplanet/jose/JoseAction
+     *
+     * @var JoseAction JWE 또는 JWS 처리 class
      */
     private $joseAction;
 
-    public function __construct()
-    {
-        return $this;
-    }
-
+    /**
+     * JOSE Action에 대한 configuration을 설정한다.
+     * JoseBuilder 결과를 입력받아 {@see $joseActionType}, {@see $joseAction}을 설정한다.
+     *
+     * @param $joseCompactBuilder JoseCompactBuilder
+     * @return $this
+     */
     public function configuration($joseCompactBuilder)
     {
         $this->joseActionType = $joseCompactBuilder->getJoseActionType();

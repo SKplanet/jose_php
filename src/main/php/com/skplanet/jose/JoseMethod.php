@@ -21,7 +21,11 @@
 
 namespace com\skplanet\jose;
 
-
+/**
+ * JOSE 기능 타입 상수 정의 class
+ *
+ * @package com\skplanet\jose
+ */
 class JoseMethod
 {
     const JWS = 1;

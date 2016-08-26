@@ -21,18 +21,38 @@
 
 namespace com\skplanet\jose;
 
+/**
+ * 설정 class를 반환하는 factory class
+ *
+ * @package com\skplanet\jose
+ */
 class JoseBuilders
 {
+    /**
+     * JWS compact serialize를 처리하기 위한 builder 클래스 factory method
+     *
+     * @return SerializationBuilder
+     */
     public static function JsonSignatureCompactSerializationBuilder()
     {
         return new SerializationBuilder(JoseMethod::JWS, JoseActionType::SERIALIZE);
     }
 
+    /**
+     * JWE compact serialize를 처리하기 위한 builder 클래스 factory method
+     *
+     * @return SerializationBuilder
+     */
     public static function JsonEncryptionCompactSerializationBuilder()
     {
         return new SerializationBuilder(JoseMethod::JWE, JoseActionType::SERIALIZE);
     }
 
+    /**
+     * JOSE deserialize를 처리하기 위한 builder 클래스 factory method
+     *
+     * @return DeserializationBuilder
+     */
     public static function compactDeserializationBuilder()
     {
         return new DeserializationBuilder(JoseActionType::DESERIALIZE);

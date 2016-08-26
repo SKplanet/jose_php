@@ -24,8 +24,16 @@ namespace com\skplanet\jose;
 use com\skplanet\jose\jwe\JweSerializer;
 use com\skplanet\jose\jws\JwsSerializer;
 
+/**
+ * JOSE deserialize configuration 처리 기능 class
+ *
+ * @package com\skplanet\jose
+ */
 class DeserializationBuilder extends JoseCompactBuilder
 {
+    /**
+     * @var string JWE or JWS value
+     */
     private $serializedSource;
 
     public function __construct()
@@ -34,12 +42,24 @@ class DeserializationBuilder extends JoseCompactBuilder
         $this->setDeserializeCompactBuildConfig($joseActionType);
     }
 
+    /**
+     * JWE, JWS value 설정한다.
+     *
+     * @param $serializedSource
+     * @return $this
+     */
     public function serializedSource($serializedSource)
     {
         $this->serializedSource = $serializedSource;
         return $this;
     }
 
+    /**
+     * 설정된 config에 따른 JOSE 처리 class를 생성하여 반환한다.
+     *
+     * @return JoseAction json serialize 인 경우 null을 반환한다.
+     * @throws \InvalidArgumentException 유효하지 않은 JoseMethod 또는 유효하지 않은 JoseActionType
+     */
     public function create()
     {
         $header = new JoseHeader();
@@ -59,7 +79,7 @@ class DeserializationBuilder extends JoseCompactBuilder
                 }
                 else
                 {
-                    throw new \InvalidArgumentException("unknown JoseSerializeType and JoseActionType");
+                    throw new \InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
                 }
             case JoseSerializeType::JSON_SERIALIZATION:
                 return null;

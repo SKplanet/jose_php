@@ -21,10 +21,36 @@
 
 namespace com\skplanet\jose;
 
-
+/**
+ * JOSE 기능을 정의한다.
+ *
+ * @package com\skplanet\jose
+ */
 interface SerializeAction
 {
-    function serialization();
-    function deserialization();
-    function getJoseHeader();
+    /**
+     * JoseBuilder의 설정값에 따라 serialize를 한다.
+     * 규격에 맞지 않는 키 길이로 요청하는 경우 exception를 발생한다.
+     *
+     * @return string JOSE serialize value
+     * @throws InvalidArgumentException 규격과 다른 암호화/서명 키 길이
+     */
+    public function serialization();
+
+    /**
+     * JOSE 규격으로 serialize된 입력값으로 부터 payload를 추출하여 반환한다.
+     * 만약 입력값이 유효하지 않는 경우 Exception를 반환한다.
+     *
+     * @return string payload (JSON)
+     * @throws InvalidAuthenticationTagException JWE authentication tag verify 오류
+     * @throws InvalidSignatureException JWS signature verify 오류
+     */
+    public function deserialization();
+
+    /**
+     * JOSE의 Header class를 반환한다.
+     *
+     * @return JoseHeader
+     */
+    public function getJoseHeader();
 }

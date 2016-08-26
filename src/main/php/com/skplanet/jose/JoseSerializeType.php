@@ -21,7 +21,11 @@
 
 namespace com\skplanet\jose;
 
-
+/**
+ * JOSE encyrption, sign 처리 방식에 대한 상수 정의 class
+ *
+ * @package com\skplanet\jose
+ */
 class JoseSerializeType
 {
     const COMPACT_SERIALIZATION = 1;
