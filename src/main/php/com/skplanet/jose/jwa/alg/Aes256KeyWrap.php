@@ -23,13 +23,17 @@ namespace com\skplanet\jose\jwa\alg;
 
 use com\skplanet\jose\jwa\crypto\A256KW;
 
+/**
+ * A256KW를 처리하는 클래스
+ *
+ * @package com\skplanet\jose\jwa\alg
+ */
 class Aes256KeyWrap extends AesKeyWrap
 {
     public function wrap($key, $src)
     {
         $aeskw = new A256KW();
         return $aeskw->wrap($key, $src);
-
     }
 
     function unwrap($key, $src)

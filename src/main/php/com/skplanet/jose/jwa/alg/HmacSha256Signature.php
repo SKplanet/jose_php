@@ -24,6 +24,11 @@ namespace com\skplanet\jose\jwa\alg;
 
 use com\skplanet\jose\exception\InvalidSignatureException;
 
+/**
+ * HmacSha256 처리를 하는 클래스
+ *
+ * @package com\skplanet\jose\jwa\alg
+ */
 class HmacSha256Signature extends Signature
 {
 

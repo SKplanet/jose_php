@@ -21,10 +21,21 @@
 
 namespace com\skplanet\jose\jwa\alg;
 
-
+/**
+ * JWE처리에 사용하는 Content Encryption Key 관리 클래스
+ *
+ * @package com\skplanet\jose\jwa\alg
+ */
 class JweAlgResult
 {
+    /**
+     * @var string random하게 생성된 content encryption key
+     */
     private $cek;
+
+    /**
+     * @var string wrapped content encryption key
+     */
     private $encryptedCek;
 
     public function __construct($cek, $encryptedCek)
@@ -33,11 +44,20 @@ class JweAlgResult
         $this->encryptedCek = $encryptedCek;
     }
 
+    /**
+     * wrapped 된 content encryption key를 반환한다.
+     *
+     * @return string
+     */
     public function getEncryptedCek()
     {
         return $this->encryptedCek;
     }
 
+    /**
+     * content encryption key를 반환한다.
+     * @return string
+     */
     public function getCek()
     {
         return $this->cek;
