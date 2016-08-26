@@ -26,26 +26,59 @@ use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
+/**
+ * JWS serialize, deserialize를 수행하는 class
+ *
+ * @package com\skplanet\jose\jws
+ */
 class JwsSerializer implements JoseAction
 {
+    /**
+     * @var JoseHeader
+     */
     private $joseHeader;
+
+    /**
+     * @var string payload
+     */
     private $payload;
+
+    /**
+     * @var string JWS sign key
+     */
     private $key;
 
-    private $b64header;
-    private $b64Payload;
-    private $b64Signature;
+    /**
+     * @var string base64url encoding value
+     */
+    private $b64header, $b64Payload, $b64Signature;
 
+    /**
+     * JOSE header를 셋팅한다.
+     *
+     * @param $joseHeader JoseHeader
+     */
     public function setJoseHeader($joseHeader)
     {
         $this->joseHeader = $joseHeader;
     }
 
+    /**
+     * JWS 처리할 payload를 셋팅한다.
+     *
+     * @param $payload string
+     */
     public function setPayload($payload)
     {
         $this->payload = $payload;
     }
 
+    /**
+     * JWS value를 셋팅한다.
+     * 파라미터는 JWS 규격에 유효하여야 하며 header, payload, signature로 각각 파싱한다.
+     *
+     * @param $jwsValue string
+     */
     public function setParse($jwsValue)
     {
         $this->payload = $jwsValue;
@@ -56,11 +89,22 @@ class JwsSerializer implements JoseAction
         $this->joseHeader->deserialize($this->b64header);
     }
 
+    /**
+     * sign key를 셋팅한다.
+     *
+     * @param $key string
+     */
     public function setKey($key)
     {
         $this->key = $key;
     }
 
+    /**
+     * 입력받은 header, payload, key로 JWS를 생성하여 반환한다.
+     *
+     * @return string JWS
+     * @throws InvalidArgumentException 규격과 다른 서명 키 길이
+     */
     public function compactSerialization()
     {
         $this->b64header = $this->joseHeader->serialize();
@@ -74,6 +118,12 @@ class JwsSerializer implements JoseAction
         return sprintf("%s.%s.%s", $this->b64header, $this->b64Payload, $this->b64Signature);
     }
 
+    /**
+     * 입력받은 JWS, key로 payload를 추출하여 반환한다.
+     *
+     * @return String payload
+     * @throws InvalidSignatureException JWS signature verify 오류
+     */
     public function compactDeserialization()
     {
         $jwsAlg = JwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
@@ -82,6 +132,11 @@ class JwsSerializer implements JoseAction
         return Base64UrlSafeEncoder::decode($this->b64Payload);
     }
 
+    /**
+     * JOSE header class를 반환한다.
+     *
+     * @return JoseHeader
+     */
     public function getJoseHeader()
     {
         return $this->joseHeader;

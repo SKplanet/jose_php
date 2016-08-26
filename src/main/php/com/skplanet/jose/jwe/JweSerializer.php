@@ -26,33 +26,79 @@ use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\JwaFactory;
 use com\skplanet\jose\util\Base64UrlSafeEncoder;
 
+/**
+ * JWE serialize, deserialize를 수행하는 class
+ *
+ * @package com\skplanet\jose\jwe
+ */
 class JweSerializer implements JoseAction
 {
+    /**
+     * @var JoseHeader
+     */
     private $joseHeader;
+
+    /**
+     * @var string JWE key encryption key
+     */
     private $key;
 
+    /**
+     * @var string content encryption key
+     */
     private $cek;
+
+    /**
+     * @var string content encryption iv
+     */
     private $iv;
 
+    /**
+     * @var string payload
+     */
     private $payload;
 
+    /**
+     * @var string base64url encoding value
+     */
     private $b64header, $b64Cek, $b64Iv, $b64CipherText, $b64At;
 
+    /**
+     * JOSE header를 셋팅한다.
+     *
+     * @param $joseHeader JoseHeader
+     */
     public function setJoseHeader($joseHeader)
     {
         $this->joseHeader = $joseHeader;
     }
 
+    /**
+     * JWE 처리할 payload를 셋팅한다.
+     *
+     * @param $payload string
+     */
     public function setPayload($payload)
     {
         $this->payload = $payload;
     }
 
+    /**
+     * key encryption key를 셋팅한다.
+     *
+     * @param $key string
+     */
     public function setKey($key)
     {
         $this->key = $key;
     }
 
+    /**
+     * JWE value를 셋팅한다.
+     * 파라미터는 JWE 규격에 유효하여야 하며 header, cek, iv, cipherText, authentication tag로 각각 파싱한다.
+     *
+     * @param $jweValue string
+     */
     public function setParse($jweValue)
     {
         $this->payload = $jweValue;
@@ -67,17 +113,33 @@ class JweSerializer implements JoseAction
         $this->iv = Base64UrlSafeEncoder::decode($this->b64Iv);
     }
 
+    /**
+     * 테스트 목적으로 사용하며 contentEncryptionKey, iv를 random 생성하지 않고 입력받은 파라미터로 사용한다.
+     * @param $cek
+     * @param $iv
+     */
     public function setUserEncryptionKey($cek, $iv)
     {
         $this->cek = $cek;
         $this->iv = $iv;
     }
 
+    /**
+     * JWE의 aad 값을 반환한다.
+     *
+     * @return string
+     */
     private function getAad()
     {
         return $this->joseHeader->serialize();
     }
 
+    /**
+     * 입력받은 header, payload, key로 JWE를 생성하여 반환한다.
+     *
+     * @return string JWE
+     * @throws InvalidArgumentException 규격과 다른 암호화 키 길이
+     */
     public function compactSerialization()
     {
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
@@ -104,6 +166,12 @@ class JweSerializer implements JoseAction
         );
     }
 
+    /**
+     * 입력받은 JWE, key로 payload를 추출하여 반환한다.
+     *
+     * @return String payload
+     * @throws InvalidAuthenticationTagException JWE authentication tag verify 오류
+     */
     public function compactDeserialization()
     {
         $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
@@ -115,6 +183,11 @@ class JweSerializer implements JoseAction
         return $jweEnc->verifyAndDecrypt($cek, $this->iv, $cipherText, $this->b64header, $this->b64At);
     }
 
+    /**
+     * JOSE header class를 반환한다.
+     *
+     * @return JoseHeader
+     */
     public function getJoseHeader()
     {
         return $this->joseHeader;
