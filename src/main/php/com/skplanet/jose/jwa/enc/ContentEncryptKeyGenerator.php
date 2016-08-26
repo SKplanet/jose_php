@@ -21,10 +21,21 @@
 
 namespace com\skplanet\jose\jwa\enc;
 
-
+/**
+ * Content encryption key를 생성하는 클래스
+ *
+ * @package com\skplanet\jose\jwa\enc
+ */
 class ContentEncryptKeyGenerator
 {
+    /**
+     * @var int content encryption key 길이
+     */
     private $keyLength;
+
+    /**
+     * @var string 생성한 content encryption key
+     */
     private $cek;
 
     public function __construct($keyLength)
@@ -32,11 +43,20 @@ class ContentEncryptKeyGenerator
         $this->keyLength = $keyLength;
     }
 
+    /**
+     * 사용자 cek를 셋팅한다. 테스트 용도로 사용해야만 한다.
+     * @param $cek
+     */
     public function setUserEncryptionKey($cek)
     {
         $this->cek = $cek;
     }
 
+    /**
+     * cek를 생성한다.
+     *
+     * @return String
+     */
     public function generateRandomKey()
     {
         if (is_null($this->cek))

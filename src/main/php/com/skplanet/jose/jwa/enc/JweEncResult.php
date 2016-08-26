@@ -21,11 +21,26 @@
 
 namespace com\skplanet\jose\jwa\enc;
 
-
+/**
+ * JWE처리에 사용하는 암호화된 payload 관리 클래스
+ *
+ * @package com\skplanet\jose\jwa\enc
+ */
 class JweEncResult
 {
+    /**
+     * @var string 암호화된 paylod
+     */
     private $cipherText;
+
+    /**
+     * @var string
+     */
     private $at;
+
+    /**
+     * @var string
+     */
     private $iv;
 
     public function __construct($cipherText, $at, $iv)
@@ -35,16 +50,31 @@ class JweEncResult
         $this->iv = $iv;
     }
 
+    /**
+     * 암호화된 payload를 반환한다.
+     *
+     * @return string
+     */
     public function getCipherText()
     {
         return $this->cipherText;
     }
 
+    /**
+     * at를 반환한다.
+     *
+     * @return string
+     */
     public function getAt()
     {
         return $this->at;
     }
 
+    /**
+     * iv를 반환한다.
+     *
+     * @return string
+     */
     public function getIv()
     {
         return $this->iv;
