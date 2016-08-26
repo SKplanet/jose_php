@@ -30,16 +30,8 @@ class DeserializationBuilder extends JoseCompactBuilder
 
     public function __construct()
     {
-        $argNum = func_num_args();
-        $arg = func_get_args();
-        if ($argNum == 1)
-        {
-            parent::compactBuilder($arg[0]);
-        }
-        else if ($argNum == 2)
-        {
-            parent::compactBuilder($arg[0], $arg[1]);
-        }
+        $joseActionType = func_get_arg(0);
+        $this->setDeserializeCompactBuildConfig($joseActionType);
     }
 
     public function serializedSource($serializedSource)

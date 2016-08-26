@@ -31,7 +31,7 @@ class SerializationBuilder extends JoseCompactBuilder
 
     public function __construct($joseMethod, $joseActionType)
     {
-        parent::compactBuilder($joseMethod, $joseActionType);
+        parent::setSerializeCompactBuildConfig($joseMethod, $joseActionType);
         $this->header = new JoseHeader();
     }
 

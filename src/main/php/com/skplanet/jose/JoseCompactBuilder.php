@@ -29,29 +29,18 @@ abstract class JoseCompactBuilder
 
     protected $key;
 
-    protected function compactBuilder()
+    protected function setSerializeCompactBuildConfig($joseMethod, $joseActionType)
     {
-        $argNum = func_num_args();
-        $arg = func_get_args();
+        $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
+        $this->joseMethod = $joseMethod;
+        $this->joseActionType = $joseActionType;
+    }
 
-        if ($argNum == 1)
-        {
-            $this->joseMethod = null;
-            $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
-            $this->joseActionType = $arg[0];
-        }
-        else if ($argNum == 2)
-        {
-            $this->joseMethod = $arg[0];
-            $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
-            $this->joseActionType = $arg[1];
-        }
-        else if ($argNum == 3)
-        {
-            $this->joseMethod = $arg[0];
-            $this->joseSerializeType = $arg[1];
-            $this->joseActionType = $arg[2];
-        }
+    protected function setDeserializeCompactBuildConfig($joseActionType)
+    {
+        $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
+        $this->joseMethod = null;
+        $this->joseActionType = $joseActionType;
     }
 
     public function getJoseActionType()
