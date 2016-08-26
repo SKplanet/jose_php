@@ -1,18 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-03
- * Time: 오후 12:11
- */
-
-namespace com\skplanet\jose\jwa\enc;
-
-use com\skplanet\jose\util\Base64UrlSafeEncoder;
-use com\skplanet\jose\util\ByteUtils;
-
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -30,10 +17,13 @@ use com\skplanet\jose\util\ByteUtils;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
- * Class Aes128Hmac256Encryption
- * @package com\skplanet\jose\jwa\enc
  */
+
+namespace com\skplanet\jose\jwa\enc;
+
+use com\skplanet\jose\util\Base64UrlSafeEncoder;
+use com\skplanet\jose\util\ByteUtils;
+
 class Aes128Hmac256Encryption extends ContentEncryption
 {
     public function __construct()

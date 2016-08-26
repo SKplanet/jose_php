@@ -1,19 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-03
- * Time: 오후 12:01
- */
-
-namespace com\skplanet\jose\jwa;
-
-use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
-use com\skplanet\jose\jwa\alg\Aes256KeyWrap;
-use com\skplanet\jose\jwa\alg\HmacSha256Signature;
-use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -31,10 +17,15 @@ use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
- * Class JwaFactory
- * @package com\skplanet\jose\jwa
  */
+
+namespace com\skplanet\jose\jwa;
+
+use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
+use com\skplanet\jose\jwa\alg\Aes256KeyWrap;
+use com\skplanet\jose\jwa\alg\HmacSha256Signature;
+use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
+
 class JwaFactory
 {
     public static function getJweAlgorithm($alg)

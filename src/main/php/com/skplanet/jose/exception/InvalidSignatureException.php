@@ -1,14 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-04
- * Time: 오후 3:22
- */
-
-namespace com\skplanet\jose\exception;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -26,10 +17,10 @@ namespace com\skplanet\jose\exception;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
- * Class InvalidSignatureException
- * @package com\skplanet\jose\exception
  */
+
+namespace com\skplanet\jose\exception;
+
 class InvalidSignatureException extends \Exception
 {
     public function __construct($message, $code=0)

@@ -1,14 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-03
- * Time: 오후 12:02
- */
-
-namespace com\skplanet\jose\jwa;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -26,10 +17,10 @@ namespace com\skplanet\jose\jwa;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
- * Class Jwa
- * @package com\skplanet\jose\jwa
  */
+
+namespace com\skplanet\jose\jwa;
+
 class Jwa
 {
     /**
