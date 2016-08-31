@@ -1,19 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-03
- * Time: 오후 12:01
- */
-
-namespace com\skplanet\jose\jwa;
-
-use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
-use com\skplanet\jose\jwa\alg\Aes256KeyWrap;
-use com\skplanet\jose\jwa\alg\HmacSha256Signature;
-use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -31,12 +17,28 @@ use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ */
+
+namespace com\skplanet\jose\jwa;
+
+use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
+use com\skplanet\jose\jwa\alg\Aes256KeyWrap;
+use com\skplanet\jose\jwa\alg\HmacSha256Signature;
+use com\skplanet\jose\jwa\enc\Aes128Hmac256Encryption;
+
+/**
+ * 입력받은 파라미터에 따라 암호화/서명 클래스를 반환하는 factory class
  *
- * Class JwaFactory
  * @package com\skplanet\jose\jwa
  */
 class JwaFactory
 {
+    /**
+     * 입력받은 알고리즘에 따라 JWE key encryption 클래스를 반환한다.
+     *
+     * @param $alg Jwa
+     * @return Aes128KeyWrap|Aes256KeyWrap
+     */
     public static function getJweAlgorithm($alg)
     {
         if ($alg == Jwa::A128KW)
@@ -49,6 +51,12 @@ class JwaFactory
         }
     }
 
+    /**
+     * 입력받은 알고리즘에 따라 JWE content encryption, sign 클래스를 반환한다.
+     *
+     * @param $enc Jwa
+     * @return Aes128Hmac256Encryption
+     */
     public static function getJweEncryptionAlgorithm($enc)
     {
         if ($enc == Jwa::A128CBC_HS256)
@@ -57,6 +65,12 @@ class JwaFactory
         }
     }
 
+    /**
+     * 입력받은 알고리즘에 따라 JWS signature 클래스를 반환한다.
+     *
+     * @param $alg Jwa
+     * @return HmacSha256Signature
+     */
     public static function getJwsAlgorithm($alg)
     {
         if ($alg == Jwa::HS256)

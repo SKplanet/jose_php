@@ -1,16 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-20
- * Time: 오후 7:46
- */
-
-namespace com\skplanet\jose\jwa\alg;
-
-use com\skplanet\jose\jwa\crypto\A256KW;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -28,8 +17,15 @@ use com\skplanet\jose\jwa\crypto\A256KW;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ */
+
+namespace com\skplanet\jose\jwa\alg;
+
+use com\skplanet\jose\jwa\crypto\A256KW;
+
+/**
+ * A256KW를 처리하는 클래스
  *
- * Class Aes256KeyWrap
  * @package com\skplanet\jose\jwa\alg
  */
 class Aes256KeyWrap extends AesKeyWrap
@@ -38,7 +34,6 @@ class Aes256KeyWrap extends AesKeyWrap
     {
         $aeskw = new A256KW();
         return $aeskw->wrap($key, $src);
-
     }
 
     function unwrap($key, $src)

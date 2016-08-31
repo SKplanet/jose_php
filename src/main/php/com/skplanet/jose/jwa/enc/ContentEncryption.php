@@ -1,17 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-03
- * Time: 오후 3:28
- */
-
-namespace com\skplanet\jose\jwa\enc;
-
-
-use com\skplanet\jose\util\Base64UrlSafeEncoder;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -29,13 +17,25 @@ use com\skplanet\jose\util\Base64UrlSafeEncoder;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ */
+
+namespace com\skplanet\jose\jwa\enc;
+
+/**
+ * Content encryption 처리 super 클래스
  *
- * Class ContentEncryption
  * @package com\skplanet\jose\jwa\enc
  */
 class ContentEncryption
 {
+    /**
+     * @var int content encryption key 길이
+     */
     protected $keyLength = 0;
+
+    /**
+     * @var int content encryption iv key 길이
+     */
     protected $ivLength = 0;
 
     public function __construct($keyLength, $ivLength)
@@ -45,16 +45,31 @@ class ContentEncryption
         return $this;
     }
 
-    public function getIvLength()
+    /**
+     * iv 길이 반환한다.
+     *
+     * @return int
+     */
+    private function getIvLength()
     {
         return $this->ivLength;
     }
 
+    /**
+     * iv를 생성한다.
+     *
+     * @return String
+     */
     public function generateRandomIv()
     {
-        return crypt_random_string($this->ivLength);
+        return crypt_random_string($this->getIvLength());
     }
 
+    /**
+     * content encryption key 생성 클래스를 반환한다.
+     *
+     * @return ContentEncryptKeyGenerator
+     */
     public function getContentEncryptionKeyGenerator()
     {
         return new ContentEncryptKeyGenerator($this->keyLength);

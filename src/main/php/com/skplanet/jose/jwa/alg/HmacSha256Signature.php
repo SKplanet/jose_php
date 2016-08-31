@@ -1,17 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-04
- * Time: 오후 2:04
- */
-
-namespace com\skplanet\jose\jwa\alg;
-
-
-use com\skplanet\jose\exception\InvalidSignatureException;
-
-/**
+/*
  * LICENSE : Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -29,8 +17,16 @@ use com\skplanet\jose\exception\InvalidSignatureException;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ */
+
+namespace com\skplanet\jose\jwa\alg;
+
+
+use com\skplanet\jose\exception\InvalidSignatureException;
+
+/**
+ * HmacSha256 처리를 하는 클래스
  *
- * Class HmacSha256Signature
  * @package com\skplanet\jose\jwa\alg
  */
 class HmacSha256Signature extends Signature
