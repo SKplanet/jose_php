@@ -1,11 +1,6 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: 1000808
- * Date: 2015-08-04
- * Time: 오후 5:07
- */
-require_once('../../../vendor/autoload.php');
+$root = dirname(dirname(dirname(__FILE__)));
+require_once $root.'/vendor/autoload.php';
 
 use com\skplanet\jose\JoseHeader;
 use com\skplanet\jose\jwa\Jwa;
