@@ -25,7 +25,7 @@ use syruppay\jose\jwa\Jwa;
 /**
  * 지원하는 JOSE alg 알고리즘 여부를 판단하는 class
  *
- * @package com\skplanet\jose
+ * @package syruppay\jose
  */
 class JoseSupportAlgorithm
 {
