@@ -1,16 +1,17 @@
 <?php
-$root = dirname(dirname(dirname(__FILE__)));
-require_once $root.'/vendor/autoload.php';
+use syruppay\jose\Jose;
+use syruppay\jose\JoseBuilders;
+use syruppay\jose\JoseHeader;
+use syruppay\jose\JoseHeaderSpec;
+use syruppay\jose\jwa\Jwa;
 
-use com\skplanet\jose\JoseHeader;
-use com\skplanet\jose\jwa\Jwa;
-use com\skplanet\jose\Jose;
-use com\skplanet\jose\JoseBuilders;
-use com\skplanet\jose\JoseHeaderSpec;
+require_once  "d:\\intellij_workspace\\php_jose\\vendor\\autoload.php";
 
 $payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
 $iss = 'sample';                                    //SyrupPay 발급 iss
 $key = '12345678901234561234567890123456';          //SyrupPay 발급 암복호화 키
+
+function with($object){ return $object; }
 
 $jose = new Jose();
 $jweToken = $jose->configuration(
