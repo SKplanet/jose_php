@@ -8,20 +8,22 @@ JOSE 규격은 SyrupPay 결제 데이터 암복호화 및 AccessToken 발행 등에 사용되며 Syru
 
 ## Installation
 ### composer ([packagist](https://packagist.org/packages/syruppay/jose))
-`"syruppay/jose": "v1.0.2"`
+`"syruppay/jose": "v1.1.0"`
 
 ## Usage
 ###JWE
 ``` php
 <?php
 
-require_once('../../../vendor/autoload.php');
+//COMPOSER의 autoload
+$baseDir = "";
+require_once($baseDir . '/vendor/autoload.php');
 
-use com\skplanet\jose\JoseHeader;
-use com\skplanet\jose\jwa\Jwa;
-use com\skplanet\jose\Jose;
-use com\skplanet\jose\JoseBuilders;
-use com\skplanet\jose\JoseHeaderSpec;
+use syruppay\jose\JoseHeader;
+use syruppay\jose\jwa\Jwa;
+use syruppay\jose\Jose;
+use syruppay\jose\JoseBuilders;
+use syruppay\jose\JoseHeaderSpec;
 
 //암호화 데이터
 $payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
@@ -62,13 +64,15 @@ var_dump($payload);
 ```php
 <?php
 
-require_once('../../../vendor/autoload.php');
+//COMPOSER의 autoload
+$baseDir = "";
+require_once($baseDir . '/vendor/autoload.php');
 
-use com\skplanet\jose\JoseHeader;
-use com\skplanet\jose\jwa\Jwa;
-use com\skplanet\jose\Jose;
-use com\skplanet\jose\JoseBuilders;
-use com\skplanet\jose\JoseHeaderSpec;
+use syruppay\jose\JoseHeader;
+use syruppay\jose\jwa\Jwa;
+use syruppay\jose\Jose;
+use syruppay\jose\JoseBuilders;
+use syruppay\jose\JoseHeaderSpec;
 
 //Sign 데이터
 $payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
