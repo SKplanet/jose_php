@@ -163,7 +163,7 @@ class JoseHeader
      *
      * @return string JSON
      */
-    private function toJson()
+    public function toJson()
     {
         return json_encode($this->header);
     }

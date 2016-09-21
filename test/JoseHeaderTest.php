@@ -6,10 +6,10 @@
  * Time: 오후 1:05
  */
 
-namespace com\skplanet\jose;
+namespace syruppay\jose;
 
 
-use com\skplanet\jose\jwa\Jwa;
+use syruppay\jose\jwa\Jwa;
 
 class JoseHeaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +21,7 @@ class JoseHeaderTest extends \PHPUnit_Framework_TestCase
         $joseHeader->setEnc(Jwa::A128CBC_HS256);
         $joseHeader->setKid('test');
 
-        $actual = $joseHeader;
+        $actual = $joseHeader->toJson();
 
         $this->assertEquals($expect, $actual);
 
@@ -49,8 +49,9 @@ class JoseHeaderTest extends \PHPUnit_Framework_TestCase
 
         $joseHeader = new JoseHeader();
         $joseHeader->deserialize($data);
+        $actual = $joseHeader->toJson();
 
-        $this->assertEquals($expect, $joseHeader);
-        printf("%s\n", $joseHeader);
+        $this->assertEquals($expect, $actual);
+        printf("%s\n", $actual);
     }
 }

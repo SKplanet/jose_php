@@ -6,7 +6,7 @@
  * Time: 오후 2:02
  */
 
-namespace com\skplanet\jose\util;
+namespace syruppay\jose\util;
 
 
 class StringUtilsTest extends \PHPUnit_Framework_TestCase

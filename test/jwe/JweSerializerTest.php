@@ -8,15 +8,14 @@
  */
 
 
-use com\skplanet\jose\JoseActionType;
-use com\skplanet\jose\JoseHeader;
-use com\skplanet\jose\jwa\alg\Aes128KeyWrap;
-use com\skplanet\jose\jwa\enc\ContentEncryptKeyGenerator;
-use com\skplanet\jose\jwa\Jwa;
-use com\skplanet\jose\jwa\JwaFactory;
-use com\skplanet\jose\jwe\JweSerializer;
-use com\skplanet\jose\util\Base64UrlSafeEncoder;
-use com\skplanet\jose\util\ByteUtils;
+use syruppay\jose\JoseActionType;
+use syruppay\jose\JoseHeader;
+use syruppay\jose\jwa\alg\Aes128KeyWrap;
+use syruppay\jose\jwa\enc\ContentEncryptKeyGenerator;
+use syruppay\jose\jwa\Jwa;
+use syruppay\jose\jwe\JweSerializer;
+use syruppay\jose\util\Base64UrlSafeEncoder;
+use syruppay\jose\util\ByteUtils;
 
 class JweSerializerTest extends PHPUnit_Framework_TestCase
 {
@@ -80,12 +79,13 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $joseHeader->setAlg(Jwa::A128KW);
         $joseHeader->setEnc(Jwa::A128CBC_HS256);
 
-        $obj = new JweSerializer(JoseActionType::SERIALIZE, $joseHeader, $src, $key);
+        $obj = new JweSerializer();
+        $obj->setJoseHeader($joseHeader);
+        $obj->setKey($key);
+        $obj->setPayload($src);
         $obj->setUserEncryptionKey($cek, $iv);
 
-        $actual = $obj->compactSeriaization();
-
-        var_dump($actual);
+        $actual = $obj->compactSerialization();
 
         $this->assertEquals($expected, $actual);
     }
@@ -100,8 +100,11 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $key = '1234567890123456';
         $src = 'fruit';
 
-        $obj = new JweSerializer(JoseActionType::SERIALIZE, $joseHeader, $src, $key);
-        $actual = $obj->compactSeriaization();
+        $obj = new JweSerializer();
+        $obj->setJoseHeader($joseHeader);
+        $obj->setKey($key);
+        $obj->setPayload($src);
+        $actual = $obj->compactSerialization();
 
         echo $actual;
     }
@@ -112,7 +115,9 @@ class JweSerializerTest extends PHPUnit_Framework_TestCase
         $enc = "eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoic2FtcGxlIn0.lc6vneeyjCkrqYglDjpko_o3xhqOVCXzhiX18XBR81vVJQdbTmiZsQ.RhhznCpTdOg1UHHK8kjMEQ.pQwfc-MMU7BIgrFSON5jQw.ath4c3U5lADxwCMM8WLdgQ";
 
         $obj = new JweSerializer(JoseActionType::DESERAILIZE, $enc, $key);
-        $actual = $obj->compactSeriaization();
+        $obj->setKey($key);
+        $obj->setParse($enc);
+        $actual = $obj->compactSerialization();
 
         var_dump($actual);
     }

@@ -6,7 +6,7 @@
  * Time: 오후 1:00
  */
 
-namespace com\skplanet\jose\util;
+namespace syruppay\jose\util;
 
 
 class Base64UrlSafeEncoderTest extends \PHPUnit_Framework_TestCase
