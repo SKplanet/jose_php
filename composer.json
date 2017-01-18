@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "php": ">=5.2.*",
+    "php": ">=5.2.0",
     "phpseclib/phpseclib": "0.3.10"
   },
   "require-dev": {
