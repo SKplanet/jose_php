@@ -19,9 +19,7 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\util;
-
-class StringUtils
+class syruppay_jose_util_StringUtils
 {
     public static function str2hex($src)
     {

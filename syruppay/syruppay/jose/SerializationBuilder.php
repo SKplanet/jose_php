@@ -19,17 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
-use syruppay\jose\jwe\JweSerializer;
-use syruppay\jose\jws\JwsSerializer;
-
 /**
  * JOSE serialize configuration 처리 기능 class
  *
  * @package syruppay\jose
  */
-class SerializationBuilder extends JoseCompactBuilder
+class syruppay_jose_SerializationBuilder extends syruppay_jose_JoseCompactBuilder
 {
     /**
      * @var JoseHeader
@@ -44,7 +39,7 @@ class SerializationBuilder extends JoseCompactBuilder
     public function __construct($joseMethod, $joseActionType)
     {
         parent::setSerializeCompactBuildConfig($joseMethod, $joseActionType);
-        $this->header = new JoseHeader();
+        $this->header = new syruppay_jose_JoseHeader();
     }
 
     /**
@@ -81,18 +76,18 @@ class SerializationBuilder extends JoseCompactBuilder
     {
         switch ($this->joseSerializeType)
         {
-            case JoseSerializeType::COMPACT_SERIALIZATION:
-                if (JoseMethod::JWE == $this->joseMethod and JoseActionType::SERIALIZE == $this->joseActionType)
+            case JOSE_COMPACT_SERIALIZATION:
+                if (JOSE_JWE == $this->joseMethod and JOSE_ACTION_SERIALIZE == $this->joseActionType)
                 {
-                    $serializer = new JweSerializer();
+                    $serializer = new syruppay_jose_jwe_JweSerializer();
                 }
-                else if (JoseMethod::JWS == $this->joseMethod and JoseActionType::SERIALIZE == $this->joseActionType)
+                else if (JOSE_JWS == $this->joseMethod and JOSE_ACTION_SERIALIZE == $this->joseActionType)
                 {
-                    $serializer = new JwsSerializer();
+                    $serializer = new syruppay_jose_jws_JwsSerializer();
                 }
                 else
                 {
-                    throw new \InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
+                    throw new InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
                 }
 
                 $serializer->setJoseHeader($this->header);
@@ -100,7 +95,7 @@ class SerializationBuilder extends JoseCompactBuilder
                 $serializer->setKey($this->key);
 
                 return $serializer;
-            case JoseSerializeType::JSON_SERIALIZATION:
+            case JOSE_JSON_SERIALIZATION:
 
             default:
                 return null;

@@ -19,9 +19,7 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\util;
-
-class Base64UrlSafeEncoder
+class syruppay_jose_util_Base64UrlSafeEncoder
 {
     public static function encode($data)
     {

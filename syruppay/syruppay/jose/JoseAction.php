@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
 /**
  * JOSE 구현 기능을 정의한다.
  *
  * @package syruppay\jose
  */
-interface JoseAction
+interface syruppay_jose_JoseAction
 {
     /**
      * JOSE 규격의 compact serialize를 처리한다.

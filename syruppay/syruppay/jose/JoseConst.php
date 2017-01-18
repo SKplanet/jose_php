@@ -19,15 +19,48 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
 /**
- * JOSE 기능 타입 상수 정의 class
+ * JWA 알고리즘 상수
  *
  * @package syruppay\jose
  */
-class JoseMethod
-{
-    const JWS = 1;
-    const JWE = 2;
-}
+define('JWA_A128KW',            'A128KW');
+define('JWA_A256KW',            'A256KW');
+define('JWA_A128CBC_HS256',     'A128CBC-HS256');
+define('JWA_HS256',             'HS256');
+
+/**
+ * JOSE 처리 타입 상수
+ *
+ * @package syruppay\jose
+ */
+define('JOSE_ACTION_SERIALIZE', 'SERIALIZE');
+define('JOSE_ACTION_DESERIALIZE', 'DESERIALIZE');
+
+/**
+ * JOSE에서 지원하는 header key 정의 (일부만 지원)
+ *
+ * @package syruppay\jose
+ */
+
+define('JOSE_HEADER_ALG', 'alg');
+define('JOSE_HEADER_ENG', 'enc');
+define('JOSE_HEADER_KID', 'kid');
+define('JOSE_HEADER_TYP', 'typ');
+
+/**
+ * JOSE 기능 타입 상수 정의
+ *
+ * @package syruppay\jose
+ */
+define('JOSE_JWS', 1);
+define('JOSE_JWE', 2);
+
+/**
+ * JOSE encyrption, sign 처리 방식에 대한 상수 정의
+ *
+ * @package syruppay\jose
+ */
+
+define('JOSE_COMPACT_SERIALIZATION', 1);
+define('JOSE_JSON_SERIALIZATION', 2);

@@ -19,9 +19,7 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\exception;
-
-class InvalidAuthenticationTagException extends \Exception
+class syruppay_jose_exception_InvalidAuthenticationTagException extends Exception
 {
     public function __construct($message, $code=0)
     {

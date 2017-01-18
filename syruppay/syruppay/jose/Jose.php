@@ -19,16 +19,14 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
-use syruppay\jose\exception\UnsupportedOperationException;
+require_once 'JoseConst.php';
 
 /**
  * 입력받은 configuration에 따라 JWS, JWE serialize, deserialize를 호출한다.
  *
  * @package syruppay\jose
  */
-class Jose implements SerializeAction
+class syruppay_jose_Jose implements syruppay_jose_SerializeAction
 {
     /**
      *
@@ -59,15 +57,15 @@ class Jose implements SerializeAction
 
     function serialization()
     {
-        if ($this->joseActionType == JoseActionType::DESERIALIZE)
-            throw new UnsupportedOperationException("configuration type is deserialize");
+        if ($this->joseActionType == JOSE_ACTION_DESERIALIZE)
+            throw new syruppay_jose_exception_UnsupportedOperationException("configuration type is deserialize");
         return $this->joseAction->compactSerialization();
     }
 
     function deserialization()
     {
-        if ($this->joseActionType == JoseActionType::SERIALIZE)
-            throw new UnsupportedOperationException("configuration type is serialize");
+        if ($this->joseActionType == JOSE_ACTION_SERIALIZE)
+            throw new syruppay_jose_exception_UnsupportedOperationException("configuration type is serialize");
         return $this->joseAction->compactDeserialization();
     }
 
