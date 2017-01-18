@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\enc;
-
 /**
  * Content encryption 처리 super 클래스
  *
  * @package syruppay\jose\jwa\enc
  */
-class ContentEncryption
+class syruppay_jose_jwa_enc_ContentEncryption
 {
     /**
      * @var int content encryption key 길이
@@ -72,6 +70,6 @@ class ContentEncryption
      */
     public function getContentEncryptionKeyGenerator()
     {
-        return new ContentEncryptKeyGenerator($this->keyLength);
+        return new syruppay_jose_jwa_enc_ContentEncryptKeyGenerator($this->keyLength);
     }
 }

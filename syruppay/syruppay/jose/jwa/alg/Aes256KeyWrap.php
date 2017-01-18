@@ -19,26 +19,22 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\alg;
-
-use syruppay\jose\jwa\crypto\A256KW;
-
 /**
  * A256KW를 처리하는 클래스
  *
  * @package syruppay\jose\jwa\alg
  */
-class Aes256KeyWrap extends AesKeyWrap
+class syruppay_jose_jwa_alg_Aes256KeyWrap extends syruppay_jose_jwa_alg_AesKeyWrap
 {
     public function wrap($key, $src)
     {
-        $aeskw = new A256KW();
+        $aeskw = new syruppay_jose_jwa_crypto_A256KW();
         return $aeskw->wrap($key, $src);
     }
 
     function unwrap($key, $src)
     {
-        $aeskw = new A256KW();
+        $aeskw = new syruppay_jose_jwa_crypto_A256KW();
         return $aeskw->unwrap($key, $src);
     }
 }

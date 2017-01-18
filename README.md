@@ -1,58 +1,50 @@
 # JOSE for SyrupPay
 
-PHP·Î ±¸ÇöÇÑ JOSE(Javascript Object Signing and Encryption) - [RFC 7516](https://tools.ietf.org/html/rfc7516), [RFC 7515](https://tools.ietf.org/html/rfc7515) ±Ô°İÀÔ´Ï´Ù. 
-JOSE ±Ô°İÀº SyrupPay °áÁ¦ µ¥ÀÌÅÍ ¾Ïº¹È£È­ ¹× AccessToken ¹ßÇà µî¿¡ »ç¿ëµÇ¸ç SyrupPay ¼­ºñ½ºÀÇ °¡¸ÍÁ¡¿¡ ¹èÆ÷ÇÏ±â À§ÇÑ ¸ñÀûÀ¸·Î ¶óÀÌºê·¯¸®°¡ ±¸ÇöµÇ¾ú½À´Ï´Ù.
+PHPë¡œ êµ¬í˜„í•œ JOSE(Javascript Object Signing and Encryption) - RFC 7516, RFC 7515 ê·œê²©ì…ë‹ˆë‹¤. JOSE ê·œê²©ì€ SyrupPay ê²°ì œ ë°ì´í„° ì•”ë³µí˜¸í™” ë° AccessToken ë°œí–‰ ë“±ì— ì‚¬ìš©ë˜ë©° SyrupPay ì„œë¹„ìŠ¤ì˜ ê°€ë§¹ì ì— ë°°í¬í•˜ê¸° ìœ„í•œ ëª©ì ìœ¼ë¡œ ë¼ì´ë¸ŒëŸ¬ë¦¬ê°€ êµ¬í˜„ë˜ì—ˆìŠµë‹ˆë‹¤.
 
 ## Supported PHP version
-=> PHP 5.3.3
+=> PHP 5.2.0
 
 ## Installation
 ### composer ([packagist](https://packagist.org/packages/syruppay/jose))
-`"syruppay/jose": "v1.1.0"`
+`"syruppay/jose": "v1.1.2"`
 
 ## Usage
 ###JWE
 ``` php
 <?php
-
-//COMPOSERÀÇ autoload
+//COMPOSERì˜ autoload
 $baseDir = "";
 require_once($baseDir . '/vendor/autoload.php');
 
-use syruppay\jose\JoseHeader;
-use syruppay\jose\jwa\Jwa;
-use syruppay\jose\Jose;
-use syruppay\jose\JoseBuilders;
-use syruppay\jose\JoseHeaderSpec;
-
-//¾ÏÈ£È­ µ¥ÀÌÅÍ
+//ì•”í˜¸í™” ë°ì´í„°
 $payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
-//SyrupPay ¹ß±Ş iss
+//SyrupPay ë°œê¸‰ iss
 $iss = 'sample';                                    
-//SyrupPay ¹ß±Ş ¾Ïº¹È£È­ Å° (AES256 KeyWrap ±âÁØ)
+//SyrupPay ë°œê¸‰ ì•”ë³µí˜¸í™” í‚¤ (AES256 KeyWrap ê¸°ì¤€)
 $key = '12345678901234561234567890123456';          
 
 /*
- * JWE header ±Ô°İ
- * JoseHeaderSpec::ALG : key wrap encryption algorithm. ¾Æ·¡ Supported JOSE encryption algorithms ÂüÁ¶
- * JoseHeaderSpec::ENC : content encryption algorithm. ¾Æ·¡ Supported JOSE encryption algorithms ÂüÁ¶
+ * JWE header ê·œê²©
+ * JoseHeaderSpec::ALG : key wrap encryption algorithm. ì•„ë˜ Supported JOSE encryption algorithms ì°¸ì¡°
+ * JoseHeaderSpec::ENC : content encryption algorithm. ì•„ë˜ Supported JOSE encryption algorithms ì°¸ì¡°
  */
-$jose = new Jose();
+$jose = new syruppay_jose_Jose();
 $jweToken = $jose->configuration(
-    JoseBuilders::JsonEncryptionCompactSerializationBuilder()
-        ->header(new JoseHeader(
-            array(JoseHeaderSpec::ALG => Jwa::A256KW,
-                JoseHeaderSpec::ENC => Jwa::A128CBC_HS256,
-                JoseHeaderSpec::KID => $iss)))
+    syruppay_jose_JoseBuilders::JsonEncryptionCompactSerializationBuilder()
+        ->header(new syruppay_jose_JoseHeader(
+            array(JOSE_HEADER_ALG => JWA_A256KW,
+                JOSE_HEADER_ENG => JWA_A128CBC_HS256,
+                JOSE_HEADER_KID => $iss)))
         ->payload($payload)
         ->key($key)
 )->serialization();
 
 var_dump($jweToken);
 
-$jose = new Jose();
+$jose = new syruppay_jose_Jose();
 $payload = $jose->configuration(
-    JoseBuilders::compactDeserializationBuilder()
+    syruppay_jose_JoseBuilders::compactDeserializationBuilder()
         ->serializedSource($jweToken)
         ->key($key)
 )->deserialization();
@@ -63,46 +55,39 @@ var_dump($payload);
 ###JWS
 ```php
 <?php
-
-//COMPOSERÀÇ autoload
+//COMPOSERì˜ autoload
 $baseDir = "";
 require_once($baseDir . '/vendor/autoload.php');
 
-use syruppay\jose\JoseHeader;
-use syruppay\jose\jwa\Jwa;
-use syruppay\jose\Jose;
-use syruppay\jose\JoseBuilders;
-use syruppay\jose\JoseHeaderSpec;
-
-//Sign µ¥ÀÌÅÍ
+//Sign ë°ì´í„°
 $payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}';
-//SyrupPay ¹ß±Ş iss
+//SyrupPay ë°œê¸‰ iss
 $iss = 'sample';                                    
-//SyrupPay ¹ß±Ş sing Å° (HmacSha256 ±âÁØ)
-$key = '12345678901234561234567890123456';   
+//SyrupPay ë°œê¸‰ sing í‚¤ (HmacSha256 ê¸°ì¤€)
+$key = '12345678901234561234567890123456';    
 
 /*
- * JWS header ±Ô°İ
- * JoseHeaderSpec::ALG : signature algorithm. ¾Æ·¡ Supported JOSE encryption algorithms ÂüÁ¶
+ * JWS header ê·œê²©
+ * JoseHeaderSpec::ALG : signature algorithm. ì•„ë˜ Supported JOSE encryption algorithms ì°¸ì¡°
  */
-$jose = new Jose();
+$jose = new syruppay_jose_Jose();
 $jwsToken = $jose->configuration(
-    JoseBuilders::JsonSignatureCompactSerializationBuilder()
-        ->header(new JoseHeader(
-            array(JoseHeaderSpec::ALG => Jwa::HS256,
-                JoseHeaderSpec::TYP => 'JWT',
-                JoseHeaderSpec::KID => $iss)))
+    syruppay_jose_JoseBuilders::JsonSignatureCompactSerializationBuilder()
+        ->header(new syruppay_jose_JoseHeader(
+            array(JOSE_HEADER_ALG => JWA_HS256,
+                JOSE_HEADER_TYP => 'JWT',
+                JOSE_HEADER_KID => $iss)))
         ->payload($payload)
         ->key($key)
 )->serialization();
 
 var_dump($jwsToken);
 
-$jose = new Jose();
+$jose = new syruppay_jose_Jose();
 $claims = $jose->configuration(
-    JoseBuilders::compactDeserializationBuilder()
-    ->serializedSource($jweToken)
-    ->key($key)
+    syruppay_jose_JoseBuilders::compactDeserializationBuilder()
+        ->serializedSource($jweToken)
+        ->key($key)
 )->deserialization();
 
 var_dump($claims);
@@ -111,10 +96,7 @@ var_dump($claims);
 
 ## Supported JOSE encryption algorithms
 ## JWE
-JWE´Â ÀÔ·ÂÇÑ payload¸¦ ¾Æ·¡¿¡¼­ Áö¿øÇÏ´Â alg¿Í enc¿¡¼­ ¸í½ÃÇÑ ¾Ë°í¸®ÁòÀ¸·Î ¾ÏÈ£È­ÇÕ´Ï´Ù. 
-Å°¿öµå alg´Â ¹ßÇàµÈ(±â °øÀ¯µÈ) key¸¦ ÀÌ¿ëÇÏ¿© ³»ºÎÀûÀ¸·Î randomÇÏ°Ô »ı¼ºµÈ CEK(content encryption key)¸¦ ¾ÏÈ£È­ÇÏ´Â ¾Ë°í¸®ÁòÀÌ¸ç, 
-Å°¿öµå enc´Â ³»ºÎÀûÀ¸·Î »ı¼ºµÈ CEK¸¦ »ç¿ëÇÏ¿© ¸í½ÃÇÑ ¾ÏÈ£È­ ¾Ë°í¸®ÁòÀ¸·Î payload¸¦ ¾ÏÈ£È­ÇÏ¸ç 
-header, CEK, iv, payloadÀÇ integrity data¸¦ »ı¼ºÇÕ´Ï´Ù.
+JWEëŠ” ì…ë ¥í•œ payloadë¥¼ ì•„ë˜ì—ì„œ ì§€ì›í•˜ëŠ” algì™€ encì—ì„œ ëª…ì‹œí•œ ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ ì•”í˜¸í™”í•©ë‹ˆë‹¤. í‚¤ì›Œë“œ algëŠ” ë°œí–‰ëœ(ê¸° ê³µìœ ëœ) keyë¥¼ ì´ìš©í•˜ì—¬ ë‚´ë¶€ì ìœ¼ë¡œ randomí•˜ê²Œ ìƒì„±ëœ CEK(content encryption key)ë¥¼ ì•”í˜¸í™”í•˜ëŠ” ì•Œê³ ë¦¬ì¦˜ì´ë©°, í‚¤ì›Œë“œ encëŠ” ë‚´ë¶€ì ìœ¼ë¡œ ìƒì„±ëœ CEKë¥¼ ì‚¬ìš©í•˜ì—¬ ëª…ì‹œí•œ ì•”í˜¸í™” ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ payloadë¥¼ ì•”í˜¸í™”í•˜ë©° header, CEK, iv, payloadì˜ integrity dataë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
 
 ### "alg" (Algorithm) Header Parameter Values For JWE
 alg Param Value|Key Management Algorithm
@@ -128,8 +110,7 @@ enc Param Value|Content Encryption Algorithm
 A128CBC-HS256|AES_128_CBC_HMAC_SHA_256 authenticated encryption algorithm
 
 ## JWS
-JWS´Â Å°¿öµå alg¿¡¼­ ¸í½ÃÇÑ ¾Ë°í¸®ÁòÀ¸·Î ÀÔ·ÂÇÑ payloadÀÇ integrity¸¦ º¸ÀåÇÕ´Ï´Ù.
-alg´Â ¹ßÇàµÈ(±â °øÀ¯µÈ) key¸¦ ÀÌ¿ëÇÏ¿© integrity data¸¦ »ı¼ºÇÕ´Ï´Ù.
+JWSëŠ” í‚¤ì›Œë“œ algì—ì„œ ëª…ì‹œí•œ ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ ì…ë ¥í•œ payloadì˜ integrityë¥¼ ë³´ì¥í•©ë‹ˆë‹¤.algëŠ” ë°œí–‰ëœ(ê¸° ê³µìœ ëœ) keyë¥¼ ì´ìš©í•˜ì—¬ integrity dataë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
 
 ### "alg" (Algorithm) Header Parameter Values for JWS
 alg Param Value|Digital Signature or MAC Algorithm

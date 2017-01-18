@@ -21,15 +21,11 @@
  * SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\crypto;
-
-use syruppay\jose\util\ByteUtils;
-
 /**
  * Class AESKW
  * @package syruppay\jose\jwa\crypto
  */
-abstract class AESKW
+abstract class syruppay_jose_jwa_crypto_AESKW
 {
     /**
      * The initial value used to wrap the key and check the integrity when unwrapped.
@@ -46,11 +42,11 @@ abstract class AESKW
     private function getInitialValue(&$key, $padding_enabled)
     {
         if (false === $padding_enabled) {
-            return ByteUtils::hex2bin('A6A6A6A6A6A6A6A6');
+            return syruppay_jose_util_ByteUtils::hex2bin('A6A6A6A6A6A6A6A6');
         }
 
         $MLI = strlen($key);
-        $iv = ByteUtils::hex2bin('A65959A6').$this->toXBits(32, $MLI);
+        $iv = syruppay_jose_util_ByteUtils::hex2bin('A65959A6').$this->toXBits(32, $MLI);
 
         $n = intval(ceil($MLI / 8));
         $key = str_pad($key, 8 * $n, "\0", STR_PAD_RIGHT);
@@ -68,7 +64,7 @@ abstract class AESKW
     private function checkInitialValue(&$key, $padding_enabled, $iv)
     {
         // RFC3394 compliant
-        if ($iv === ByteUtils::hex2bin('A6A6A6A6A6A6A6A6')) {
+        if ($iv === syruppay_jose_util_ByteUtils::hex2bin('A6A6A6A6A6A6A6A6')) {
             return true;
         }
 
@@ -78,7 +74,7 @@ abstract class AESKW
         }
 
         // The high-order half of the AIV according to the RFC5649
-        if (ByteUtils::hex2bin('A65959A6') !== $this->getMSB($iv)) {
+        if (syruppay_jose_util_ByteUtils::hex2bin('A65959A6') !== $this->getMSB($iv)) {
             return false;
         }
 
@@ -109,10 +105,10 @@ abstract class AESKW
     private function checkKeySize($key, $padding_enabled)
     {
         if (false === $padding_enabled && 0 !== strlen($key) % 8) {
-            throw new \InvalidArgumentException('Bad key size');
+            throw new InvalidArgumentException('Bad key size');
         }
         if (1 > strlen($key)) {
-            throw new \InvalidArgumentException('Bad key size');
+            throw new InvalidArgumentException('Bad key size');
         }
     }
 
@@ -168,7 +164,7 @@ abstract class AESKW
         $N = count($P);
 
         if (1 >= $N) {
-            throw new \RuntimeException('Bad data');
+            throw new RuntimeException('Bad data');
         } elseif (2 === $N) {
             $B = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $kek, $P[0].$P[1], MCRYPT_MODE_ECB);
             $unwrapped = $this->getLSB($B);
@@ -188,7 +184,7 @@ abstract class AESKW
             $unwrapped = implode('', $R);
         }
         if (!$this->checkInitialValue($unwrapped, $padding_enabled, $A)) {
-            throw new \RuntimeException('Integrity check failed');
+            throw new RuntimeException('Integrity check failed');
         }
 
         return $unwrapped;
@@ -202,7 +198,7 @@ abstract class AESKW
      */
     private function toXBits($bits, $value)
     {
-        return ByteUtils::hex2bin(str_pad(dechex($value), $bits / 4, '0', STR_PAD_LEFT));
+        return syruppay_jose_util_ByteUtils::hex2bin(str_pad(dechex($value), $bits / 4, '0', STR_PAD_LEFT));
     }
 
     /**

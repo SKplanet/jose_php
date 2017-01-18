@@ -19,22 +19,17 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-use syruppay\jose\jwa\Jwa;
-
 /**
  * 지원하는 JOSE enc 알고리즘 여부를 판단하는 class
  *
  * @package syruppay\jose
  */
-class JoseSupportEncryption
+class syruppay_jose_JoseSupportEncryption
 {
     /**
      * @var array JWE: A128CBC-HS256
      */
-    private static $jweSupportEnc = array(
-        Jwa::A128CBC_HS256
-    );
+    private static $jweSupportEnc = array(JWA_A128CBC_HS256);
 
     /**
      * 입력한 enc가 JWE 지원하는 알고리즘인지 확인을 한다.

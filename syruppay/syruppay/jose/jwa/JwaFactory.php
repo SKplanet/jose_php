@@ -19,19 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa;
-
-use syruppay\jose\jwa\alg\Aes128KeyWrap;
-use syruppay\jose\jwa\alg\Aes256KeyWrap;
-use syruppay\jose\jwa\alg\HmacSha256Signature;
-use syruppay\jose\jwa\enc\Aes128Hmac256Encryption;
-
 /**
  * 입력받은 파라미터에 따라 암호화/서명 클래스를 반환하는 factory class
  *
  * @package syruppay\jose\jwa
  */
-class JwaFactory
+class syruppay_jose_jwa_JwaFactory
 {
     /**
      * 입력받은 알고리즘에 따라 JWE key encryption 클래스를 반환한다.
@@ -41,13 +34,13 @@ class JwaFactory
      */
     public static function getJweAlgorithm($alg)
     {
-        if ($alg == Jwa::A128KW)
+        if ($alg == JWA_A128KW)
         {
-            return new Aes128KeyWrap(16);
+            return new syruppay_jose_jwa_alg_Aes128KeyWrap(16);
         }
-        else if ($alg == Jwa::A256KW)
+        else if ($alg == JWA_A256KW)
         {
-            return new Aes256KeyWrap(32);
+            return new syruppay_jose_jwa_alg_Aes256KeyWrap(32);
         }
     }
 
@@ -59,9 +52,9 @@ class JwaFactory
      */
     public static function getJweEncryptionAlgorithm($enc)
     {
-        if ($enc == Jwa::A128CBC_HS256)
+        if ($enc == JWA_A128CBC_HS256)
         {
-            return new Aes128Hmac256Encryption();
+            return new syruppay_jose_jwa_enc_Aes128Hmac256Encryption();
         }
     }
 
@@ -73,9 +66,9 @@ class JwaFactory
      */
     public static function getJwsAlgorithm($alg)
     {
-        if ($alg == Jwa::HS256)
+        if ($alg == JWA_HS256)
         {
-            return new HmacSha256Signature(32);
+            return new syruppay_jose_jwa_alg_HmacSha256Signature(32);
         }
     }
 }

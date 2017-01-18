@@ -19,19 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jws;
-
-use syruppay\jose\JoseAction;
-use syruppay\jose\JoseHeader;
-use syruppay\jose\jwa\JwaFactory;
-use syruppay\jose\util\Base64UrlSafeEncoder;
-
 /**
  * JWS serialize, deserialize를 수행하는 class
  *
  * @package syruppay\jose\jws
  */
-class JwsSerializer implements JoseAction
+class syruppay_jose_jws_JwsSerializer implements syruppay_jose_JoseAction
 {
     /**
      * @var JoseHeader
@@ -85,7 +78,7 @@ class JwsSerializer implements JoseAction
         list($this->b64header, $this->b64Payload, $this->b64Signature) =
             explode('.', $jwsValue);
 
-        $this->joseHeader = new JoseHeader();
+        $this->joseHeader = new syruppay_jose_JoseHeader();
         $this->joseHeader->deserialize($this->b64header);
     }
 
@@ -108,9 +101,9 @@ class JwsSerializer implements JoseAction
     public function compactSerialization()
     {
         $this->b64header = $this->joseHeader->serialize();
-        $this->b64Payload = Base64UrlSafeEncoder::encode($this->payload);
+        $this->b64Payload = syruppay_jose_util_Base64UrlSafeEncoder::encode($this->payload);
 
-        $jwsAlg = JwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
+        $jwsAlg = syruppay_jose_jwa_JwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
 
         $jwsAlg->sign(sprintf("%s.%s", $this->b64header, $this->b64Payload), $this->key);
         $this->b64Signature = $jwsAlg->serialize();
@@ -126,10 +119,10 @@ class JwsSerializer implements JoseAction
      */
     public function compactDeserialization()
     {
-        $jwsAlg = JwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
+        $jwsAlg = syruppay_jose_jwa_JwaFactoryJwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
         $jwsAlg->verify(sprintf("%s.%s", $this->b64header, $this->b64Payload), $this->b64Signature, $this->key);
 
-        return Base64UrlSafeEncoder::decode($this->b64Payload);
+        return syruppay_jose_util_Base64UrlSafeEncoder::decode($this->b64Payload);
     }
 
     /**

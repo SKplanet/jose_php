@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "php": ">=5.3.3",
+    "php": ">=5.2.0",
     "phpseclib/phpseclib": "0.3.10"
   },
   "require-dev": {
@@ -29,8 +29,8 @@
     "phpdocumentor/phpdocumentor": "2.*"
   },
   "autoload": {
-    "psr-4": {
-      "":"syruppay"
+    "psr-0": {
+      "syruppay": "syruppay"
     }
   }
 }

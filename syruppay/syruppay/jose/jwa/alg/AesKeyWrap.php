@@ -19,15 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\alg;
-use syruppay\jose\jwa\enc\ContentEncryptKeyGenerator;
-
 /**
  * AesKeyWrap 처리하는 추상 클래스
  *
  * @package syruppay\jose\jwa\alg
  */
-abstract class AesKeyWrap
+abstract class syruppay_jose_jwa_alg_AesKeyWrap
 {
     /**
      * @var int Wrap/UnWrap 키 길이
@@ -50,7 +47,7 @@ abstract class AesKeyWrap
     {
         if ($this->keyLength != strlen($key))
         {
-            throw new \InvalidArgumentException('JWE key must be '.$this->keyLength.' bytes. Yours key '.strlen($key).' bytes.');
+            throw new InvalidArgumentException('JWE key must be '.$this->keyLength.' bytes. Yours key '.strlen($key).' bytes.');
         }
     }
 
@@ -67,7 +64,7 @@ abstract class AesKeyWrap
         $cek = $cekGenerator->generateRandomKey();
         $wrapCek = $this->wrap($key, $cek);
 
-        return new JweAlgResult($cek, $wrapCek);
+        return new syruppay_jose_jwa_alg_JweAlgResult($cek, $wrapCek);
     }
 
     /**

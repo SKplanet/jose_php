@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
 /**
  * 설정 class를 반환하는 factory class
  *
  * @package syruppay\jose
  */
-class JoseBuilders
+class syruppay_jose_JoseBuilders
 {
     /**
      * JWS compact serialize를 처리하기 위한 builder 클래스 factory method
@@ -35,7 +33,7 @@ class JoseBuilders
      */
     public static function JsonSignatureCompactSerializationBuilder()
     {
-        return new SerializationBuilder(JoseMethod::JWS, JoseActionType::SERIALIZE);
+        return new syruppay_jose_SerializationBuilder(JOSE_JWS, JOSE_ACTION_SERIALIZE);
     }
 
     /**
@@ -45,7 +43,7 @@ class JoseBuilders
      */
     public static function JsonEncryptionCompactSerializationBuilder()
     {
-        return new SerializationBuilder(JoseMethod::JWE, JoseActionType::SERIALIZE);
+        return new syruppay_jose_SerializationBuilder(JOSE_JWE, JOSE_ACTION_SERIALIZE);
     }
 
     /**
@@ -55,6 +53,6 @@ class JoseBuilders
      */
     public static function compactDeserializationBuilder()
     {
-        return new DeserializationBuilder(JoseActionType::DESERIALIZE);
+        return new syruppay_jose_DeserializationBuilder(JOSE_ACTION_DESERIALIZE);
     }
 }

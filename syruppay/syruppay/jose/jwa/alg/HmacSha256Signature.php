@@ -19,17 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\alg;
-
-
-use syruppay\jose\exception\InvalidSignatureException;
-
 /**
  * HmacSha256 처리를 하는 클래스
  *
  * @package syruppay\jose\jwa\alg
  */
-class HmacSha256Signature extends Signature
+class syruppay_jose_jwa_alg_HmacSha256Signature extends syruppay_jose_jwa_alg_Signature
 {
 
     public function sign($src, $key)
@@ -44,7 +39,7 @@ class HmacSha256Signature extends Signature
 
         if ($actual != $expected)
         {
-            throw new InvalidSignatureException('invalid signature');
+            throw new syruppay_jose_exception_InvalidSignatureException('invalid signature');
         }
     }
 }
