@@ -28,7 +28,7 @@
     "phpunit/phpunit": "4.8.23",
     "phpdocumentor/phpdocumentor": "2.*"
   },
-  "include-path": ["syruppay/syruppay/jose"],
+//  "include-path": ["syruppay/syruppay/jose"],
   "autoload": {
     "psr-0": {
       "syruppay_jose_exception": "syruppay/syruppay/jose/exception/",
