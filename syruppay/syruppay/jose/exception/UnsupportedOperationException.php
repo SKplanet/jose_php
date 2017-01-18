@@ -19,10 +19,7 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\exception;
-
-
-class UnsupportedOperationException extends \Exception
+class syruppay_jose_exception_UnsupportedOperationException extends Exception
 {
     public function __construct($message, $code=0)
     {

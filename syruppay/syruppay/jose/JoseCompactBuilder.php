@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
 /**
  * JOSE build configuration 처리 기능 class
  *
  * @package syruppay\jose
  */
-abstract class JoseCompactBuilder
+abstract class syruppay_jose_JoseCompactBuilder
 {
     /**
      * @var JoseMethod
@@ -56,7 +54,7 @@ abstract class JoseCompactBuilder
      */
     protected function setSerializeCompactBuildConfig($joseMethod, $joseActionType)
     {
-        $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
+        $this->joseSerializeType = JOSE_COMPACT_SERIALIZATION;
         $this->joseMethod = $joseMethod;
         $this->joseActionType = $joseActionType;
     }
@@ -68,7 +66,7 @@ abstract class JoseCompactBuilder
      */
     protected function setDeserializeCompactBuildConfig($joseActionType)
     {
-        $this->joseSerializeType = JoseSerializeType::COMPACT_SERIALIZATION;
+        $this->joseSerializeType = JOSE_COMPACT_SERIALIZATION;
         $this->joseMethod = null;
         $this->joseActionType = $joseActionType;
     }

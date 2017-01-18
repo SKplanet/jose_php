@@ -19,30 +19,22 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-use syruppay\jose\jwa\Jwa;
-
 /**
  * 지원하는 JOSE alg 알고리즘 여부를 판단하는 class
  *
  * @package syruppay\jose
  */
-class JoseSupportAlgorithm
+class syruppay_jose_JoseSupportAlgorithm
 {
     /**
      * @var array JWE: A128KW, A256KW 지원
      */
-    private static $jweSupportAlg = array(
-        Jwa::A128KW,
-        Jwa::A256KW
-    );
+    private static $jweSupportAlg = array(JWA_A128KW, JWA_A256KW);
 
     /**
      * @var array JWS: HS256 지원
      */
-    private static $jwsSupportAlg = array(
-        Jwa::HS256
-    );
+    private static $jwsSupportAlg = array(JWA_HS256);
 
     /**
      * 입력한 alg가 지원하는 알고리즘인지 확인을 한다.
@@ -50,7 +42,7 @@ class JoseSupportAlgorithm
      * @param $alg string
      * @return bool
      */
-    public static function isSupported($alg)
+    public function isSupported($alg)
     {
         return self::isJWESupported($alg) or self::isJWSSupported($alg);
     }
@@ -61,7 +53,7 @@ class JoseSupportAlgorithm
      * @param $alg string
      * @return bool
      */
-    public static function isJWESupported($alg)
+    public function isJWESupported($alg)
     {
         return in_array($alg, self::$jweSupportAlg);
     }
@@ -72,7 +64,7 @@ class JoseSupportAlgorithm
      * @param $alg string
      * @return bool
      */
-    public static function isJWSSupported($alg)
+    public function isJWSSupported($alg)
     {
         return in_array($alg, self::$jwsSupportAlg);
     }

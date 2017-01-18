@@ -19,9 +19,7 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\util;
-
-class ByteUtils
+class syruppay_jose_util_ByteUtils
 {
     public static function hex2bin($src)
     {

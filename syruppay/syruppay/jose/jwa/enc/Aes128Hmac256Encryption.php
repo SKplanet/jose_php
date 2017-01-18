@@ -19,17 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\enc;
-
-use syruppay\jose\util\Base64UrlSafeEncoder;
-use syruppay\jose\util\ByteUtils;
-
 /**
  * A128CBC-HS256 알고리즘을 처리하는 클래스
  *
  * @package syruppay\jose\jwa\enc
  */
-class Aes128Hmac256Encryption extends ContentEncryption
+class syruppay_jose_jwa_enc_Aes128Hmac256Encryption extends syruppay_jose_jwa_enc_ContentEncryption
 {
     public function __construct()
     {
@@ -54,7 +49,7 @@ class Aes128Hmac256Encryption extends ContentEncryption
         $cipherText = $this->encryption($encKey, $iv, $payload);
         $at = $this->sign($hmacKey, $iv, $cipherText, $aad);
 
-        return new JweEncResult($cipherText, $at, $iv);
+        return new syruppay_jose_jwa_enc_JweEncResult($cipherText, $at, $iv);
     }
 
     /**
@@ -88,7 +83,7 @@ class Aes128Hmac256Encryption extends ContentEncryption
      */
     private function decryption($key, $iv, $cipherText)
     {
-        $cipher = new \Crypt_AES(CRYPT_MODE_CBC);
+        $cipher = new Crypt_AES(CRYPT_MODE_CBC);
         $cipher->setKey($key);
         $cipher->setIV($iv);
         $cipher->enablePadding();
@@ -110,10 +105,10 @@ class Aes128Hmac256Encryption extends ContentEncryption
      */
     private function verifyAuthenticationTag($hmacKey, $iv, $cipherText, $aad, $expected)
     {
-        $actual = Base64UrlSafeEncoder::encode($this->sign($hmacKey, $iv, $cipherText, $aad));
+        $actual = syruppay_jose_util_Base64UrlSafeEncoder::encode($this->sign($hmacKey, $iv, $cipherText, $aad));
 
         if ($actual!= $expected)
-            throw new InvalidAuthenticationTagException('not match : '.$actual);
+            throw new syruppay_jose_exception_InvalidAuthenticationTagException('not match : '.$actual);
     }
 
     /**
@@ -126,7 +121,7 @@ class Aes128Hmac256Encryption extends ContentEncryption
      */
     private function encryption($key, $iv, $src)
     {
-        $cipher = new \Crypt_AES(CRYPT_MODE_CBC);
+        $cipher = new Crypt_AES(CRYPT_MODE_CBC);
         $cipher->setKey($key);
         $cipher->setIV($iv);
         $cipher->enablePadding();
@@ -159,6 +154,6 @@ class Aes128Hmac256Encryption extends ContentEncryption
     private function getAl($aad)
     {
         $aadLen = strlen($aad)*8;
-        return ByteUtils::convert2UnsignedLongBE($aadLen);
+        return syruppay_jose_util_ByteUtils::convert2UnsignedLongBE($aadLen);
     }
 }

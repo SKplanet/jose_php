@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\enc;
-
 /**
  * JWE처리에 사용하는 암호화된 payload 관리 클래스
  *
  * @package syruppay\jose\jwa\enc
  */
-class JweEncResult
+class syruppay_jose_jwa_enc_JweEncResult
 {
     /**
      * @var string 암호화된 paylod

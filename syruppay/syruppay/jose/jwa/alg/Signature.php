@@ -19,17 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\alg;
-
-
-use syruppay\jose\util\Base64UrlSafeEncoder;
-
 /**
  * signature를 생성하는 추상 클래스
  *
  * @package syruppay\jose\jwa\alg
  */
-abstract class Signature
+abstract class syruppay_jose_jwa_alg_Signature
 {
     /**
      * @var int sign 키길이
@@ -58,7 +53,7 @@ abstract class Signature
     {
         if (strlen($key) != $this->keyLength)
         {
-            throw new \InvalidArgumentException('JWS hash key must be '.$this->keyLength.' bytes');
+            throw new InvalidArgumentException('JWS hash key must be '.$this->keyLength.' bytes');
         }
     }
 
@@ -71,7 +66,7 @@ abstract class Signature
     public function serialize()
     {
         if (!is_null($this->raw))
-            return Base64UrlSafeEncoder::encode($this->raw);
+            return syruppay_jose_util_Base64UrlSafeEncoder::encode($this->raw);
         else
             return null;
     }

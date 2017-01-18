@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
 /**
  * JOSE 기능을 정의한다.
  *
  * @package syruppay\jose
  */
-interface SerializeAction
+interface syruppay_jose_SerializeAction
 {
     /**
      * JoseBuilder의 설정값에 따라 serialize를 한다.

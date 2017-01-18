@@ -19,19 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwe;
-
-use syruppay\jose\JoseAction;
-use syruppay\jose\JoseHeader;
-use syruppay\jose\jwa\JwaFactory;
-use syruppay\jose\util\Base64UrlSafeEncoder;
-
 /**
  * JWE serialize, deserialize를 수행하는 class
  *
  * @package syruppay\jose\jwe
  */
-class JweSerializer implements JoseAction
+class syruppay_jose_jwe_JweSerializer implements syruppay_jose_JoseAction
 {
     /**
      * @var JoseHeader
@@ -106,11 +99,11 @@ class JweSerializer implements JoseAction
         list($this->b64header, $this->b64Cek, $this->b64Iv, $this->b64CipherText, $this->b64At) =
             explode('.', $jweValue);
 
-        $this->joseHeader = new JoseHeader();
+        $this->joseHeader = new syruppay_jose_JoseHeader();
         $this->joseHeader->deserialize($this->b64header);
 
-        $this->cek = Base64UrlSafeEncoder::decode($this->b64Cek);
-        $this->iv = Base64UrlSafeEncoder::decode($this->b64Iv);
+        $this->cek = syruppay_jose_util_Base64UrlSafeEncoder::decode($this->b64Cek);
+        $this->iv = syruppay_jose_util_Base64UrlSafeEncoder::decode($this->b64Iv);
     }
 
     /**
@@ -142,8 +135,8 @@ class JweSerializer implements JoseAction
      */
     public function compactSerialization()
     {
-        $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
-        $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
+        $jweAlg = syruppay_jose_jwa_JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
+        $jweEnc = syruppay_jose_jwa_JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
 
         $cekGenerator = $jweEnc->getContentEncryptionKeyGenerator();
         $cekGenerator->setUserEncryptionKey($this->cek);
@@ -159,10 +152,10 @@ class JweSerializer implements JoseAction
 
         return sprintf("%s.%s.%s.%s.%s",
             $this->joseHeader->serialize(),
-            Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek()),
-            Base64UrlSafeEncoder::encode($iv),
-            Base64UrlSafeEncoder::encode($cipherText),
-            Base64UrlSafeEncoder::encode($at)
+            syruppay_jose_util_Base64UrlSafeEncoder::encode($jweAlgResult->getEncryptedCek()),
+            syruppay_jose_util_Base64UrlSafeEncoder::encode($iv),
+            syruppay_jose_util_Base64UrlSafeEncoder::encode($cipherText),
+            syruppay_jose_util_Base64UrlSafeEncoder::encode($at)
         );
     }
 
@@ -174,11 +167,11 @@ class JweSerializer implements JoseAction
      */
     public function compactDeserialization()
     {
-        $jweAlg = JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
-        $jweEnc = JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
+        $jweAlg = syruppay_jose_jwa_JwaFactory::getJweAlgorithm($this->joseHeader->getAlg());
+        $jweEnc = syruppay_jose_jwa_JwaFactory::getJweEncryptionAlgorithm($this->joseHeader->getEnc());
 
         $cek = $jweAlg->decryption($this->key, $this->cek);
-        $cipherText = Base64UrlSafeEncoder::decode($this->b64CipherText);
+        $cipherText = syruppay_jose_util_Base64UrlSafeEncoder::decode($this->b64CipherText);
 
         return $jweEnc->verifyAndDecrypt($cek, $this->iv, $cipherText, $this->b64header, $this->b64At);
     }

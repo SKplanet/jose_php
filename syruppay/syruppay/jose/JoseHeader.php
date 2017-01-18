@@ -19,18 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
-use syruppay\jose\exception\UnSupportedJoseAlgorithmException;
-use syruppay\jose\jwa\Jwa;
-use syruppay\jose\util\Base64UrlSafeEncoder;
-
 /**
  * JOSE header 관리 class
  *
  * @package syruppay\jose
  */
-class JoseHeader
+class syruppay_jose_JoseHeader
 {
     private $header = array();
 
@@ -52,7 +46,7 @@ class JoseHeader
         }
         else if ($argNum != 0)
         {
-            throw new \InvalidArgumentException('Usage : new JoseHeader(array(JoseHeaderSpec => $value)');
+            throw new InvalidArgumentException('Usage : new JoseHeader(array(JoseHeaderSpec => $value)');
         }
     }
 
@@ -65,12 +59,13 @@ class JoseHeader
      */
     public function setAlg($alg)
     {
-        if (!JoseSupportAlgorithm::isSupported($alg))
+        $supported = new syruppay_jose_JoseSupportAlgorithm();
+        if (!$supported->isSupported($alg))
         {
-            throw new UnSupportedJoseAlgorithmException("unknown header 'alg' value : ".$alg);
+            throw new syruppay_jose_exception_UnSupportedJoseAlgorithmException("unknown header 'alg' value : ".$alg);
         }
 
-        $this->header[JoseHeaderSpec::ALG] = $alg;
+        $this->header[JOSE_HEADER_ALG] = $alg;
         return $this;
     }
 
@@ -81,7 +76,7 @@ class JoseHeader
      */
     public function getAlg()
     {
-        return $this->header[JoseHeaderSpec::ALG];
+        return $this->header[JOSE_HEADER_ALG];
     }
 
     /**
@@ -93,12 +88,13 @@ class JoseHeader
      */
     public function setEnc($enc)
     {
-        if (!JoseSupportEncryption::isSupported($enc))
+        $supported = new syruppay_jose_JoseSupportEncryption();
+        if (!$supported->isSupported($enc))
         {
-            throw new UnSupportedJoseAlgorithmException("unknown header 'enc' value : ".$enc);
+            throw new syruppay_jose_exception_UnSupportedJoseAlgorithmException("unknown header 'enc' value : ".$enc);
         }
 
-        $this->header[JoseHeaderSpec::ENC] = $enc;
+        $this->header[JOSE_HEADER_ENG] = $enc;
         return $this;
     }
 
@@ -109,7 +105,7 @@ class JoseHeader
      */
     public function getEnc()
     {
-        return $this->header[JoseHeaderSpec::ENC];
+        return $this->header[JOSE_HEADER_ENG];
     }
 
     /**
@@ -120,7 +116,7 @@ class JoseHeader
      */
     public function setKid($kid)
     {
-        $this->header[JoseHeaderSpec::KID] = $kid;
+        $this->header[JOSE_HEADER_KID] = $kid;
         return $this;
     }
 
@@ -131,7 +127,7 @@ class JoseHeader
      */
     public function getKid()
     {
-        return $this->header[JoseHeaderSpec::KID];
+        return $this->header[JOSE_HEADER_KID];
     }
 
     /**
@@ -175,7 +171,7 @@ class JoseHeader
      */
     public function serialize()
     {
-        return Base64UrlSafeEncoder::encode($this->toJson());
+        return syruppay_jose_util_Base64UrlSafeEncoder::encode($this->toJson());
     }
 
     /**
@@ -186,7 +182,7 @@ class JoseHeader
     public function deserialize($src)
     {
         list($headerToken, $rest) = array_pad(explode(".", $src, 2), 2, null);
-        $this->header = json_decode(Base64UrlSafeEncoder::decode($headerToken), true);
+        $this->header = json_decode(syruppay_jose_util_Base64UrlSafeEncoder::decode($headerToken), true);
     }
 
     /**
@@ -197,17 +193,18 @@ class JoseHeader
      */
     public function getJoseMethod()
     {
-        if (JoseSupportAlgorithm::isJWESupported($this->getAlg()))
+        $supported = new syruppay_jose_JoseSupportAlgorithm();
+        if ($supported->isJWESupported($this->getAlg()))
         {
-            return JoseMethod::JWE;
+            return JOSE_JWE;
         }
-        else if (JoseSupportAlgorithm::isJWSSupported($this->getAlg()))
+        else if ($supported->isJWSSupported($this->getAlg()))
         {
-            return JoseMethod::JWS;
+            return JOSE_JWS;
         }
         else
         {
-            throw new UnSupportedJoseAlgorithmException($this->getAlg().' is not supported.');
+            throw new syruppay_jose_exception_UnSupportedJoseAlgorithmException($this->getAlg().' is not supported.');
         }
     }
 }

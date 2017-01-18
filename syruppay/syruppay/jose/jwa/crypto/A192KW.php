@@ -21,13 +21,11 @@
  * SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\crypto;
-
 /**
  * Class A192KW
  * @package syruppay\jose\jwa\crypto
  */
-class A192KW extends AESKW
+class syruppay_jose_jwa_crypto_A192KW extends syruppay_jose_jwa_crypto_AESKW
 {
     /**
      * @param string $kek The Key Encryption Key
@@ -37,7 +35,7 @@ class A192KW extends AESKW
     function checkKEKSize($kek)
     {
         if (strlen($kek) !== 24) {
-            throw new \InvalidArgumentException('Bad KEK size');
+            throw new InvalidArgumentException('Bad KEK size');
         }
     }
 }

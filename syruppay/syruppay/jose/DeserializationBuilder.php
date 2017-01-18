@@ -19,17 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose;
-
-use syruppay\jose\jwe\JweSerializer;
-use syruppay\jose\jws\JwsSerializer;
-
 /**
  * JOSE deserialize configuration 처리 기능 class
  *
  * @package syruppay\jose
  */
-class DeserializationBuilder extends JoseCompactBuilder
+class syruppay_jose_DeserializationBuilder extends syruppay_jose_JoseCompactBuilder
 {
     /**
      * @var string JWE or JWS value
@@ -62,31 +57,31 @@ class DeserializationBuilder extends JoseCompactBuilder
      */
     public function create()
     {
-        $header = new JoseHeader();
+        $header = new syruppay_jose_JoseHeader();
         $header->deserialize($this->serializedSource);
         $this->joseMethod = $header->getJoseMethod();
 
         switch ($this->joseSerializeType)
         {
-            case JoseSerializeType::COMPACT_SERIALIZATION:
-                if (JoseMethod::JWE == $this->joseMethod and JoseActionType::DESERIALIZE == $this->joseActionType)
+            case JOSE_COMPACT_SERIALIZATION:
+                if (JOSE_JWE == $this->joseMethod and JOSE_ACTION_DESERIALIZE == $this->joseActionType)
                 {
-                    $serializer = new JweSerializer();
+                    $serializer = new syruppay_jose_jwe_JweSerializer();
                 }
-                else if (JoseMethod::JWS == $this->joseMethod and JoseActionType::DESERIALIZE == $this->joseActionType)
+                else if (JOSE_JWS == $this->joseMethod and JOSE_ACTION_DESERIALIZE == $this->joseActionType)
                 {
-                    $serializer = new JwsSerializer();
+                    $serializer = new syruppay_jose_jws_JwsSerializer();
                 }
                 else
                 {
-                    throw new \InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
+                    throw new InvalidArgumentException("Unknown JoseSerializeType and JoseActionType");
                 }
 
                 $serializer->setKey($this->key);
                 $serializer->setParse($this->serializedSource);
 
                 return $serializer;
-            case JoseSerializeType::JSON_SERIALIZATION:
+            case JOSE_JSON_SERIALIZATION:
                 return null;
             default:
                 return null;

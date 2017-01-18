@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\enc;
-
 /**
  * Content encryption key를 생성하는 클래스
  *
  * @package syruppay\jose\jwa\enc
  */
-class ContentEncryptKeyGenerator
+class syruppay_jose_jwa_enc_ContentEncryptKeyGenerator
 {
     /**
      * @var int content encryption key 길이

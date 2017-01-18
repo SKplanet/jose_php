@@ -19,14 +19,12 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\jwa\alg;
-
 /**
  * JWE처리에 사용하는 Content Encryption Key 관리 클래스
  *
  * @package syruppay\jose\jwa\alg
  */
-class JweAlgResult
+class syruppay_jose_jwa_alg_JweAlgResult
 {
     /**
      * @var string random하게 생성된 content encryption key

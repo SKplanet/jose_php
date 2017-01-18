@@ -19,9 +19,7 @@
  * THE SOFTWARE.
  */
 
-namespace syruppay\jose\exception;
-
-class UnSupportedJoseAlgorithmException extends \Exception
+class syruppay_jose_exception_UnSupportedJoseAlgorithmException extends Exception
 {
     public function __construct($message, $code=0)
     {
