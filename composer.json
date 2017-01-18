@@ -31,15 +31,16 @@
 //  "include-path": ["syruppay/syruppay/jose"],
   "autoload": {
     "psr-0": {
-      "syruppay_jose_exception": "syruppay/syruppay/jose/exception/",
-      "syruppay_jose_jwa_alg": "syruppay/syruppay/jose/jwa/alg/",
-      "syruppay_jose_jwa_crypto": "syruppay/syruppay/jose/jwa/crypto/",
-      "syruppay_jose_jwa_enc": "syruppay/syruppay/jose/jwa/enc/",
-      "syruppay_jose_jwa": "syruppay/syruppay/jose/jwa/",
-      "syruppay_jose_jwe": "syruppay/syruppay/jose/jwe/",
-      "syruppay_jose_jws": "syruppay/syruppay/jose/jws/",
-      "syruppay_jose_util": "syruppay/syruppay/jose/util/",
-      "syruppay_jose": "syruppay/syruppay/jose/"
+      "syruppay": ""
+//      "syruppay_jose_exception": "syruppay/syruppay/jose/exception/",
+//      "syruppay_jose_jwa_alg": "syruppay/syruppay/jose/jwa/alg/",
+//      "syruppay_jose_jwa_crypto": "syruppay/syruppay/jose/jwa/crypto/",
+//      "syruppay_jose_jwa_enc": "syruppay/syruppay/jose/jwa/enc/",
+//      "syruppay_jose_jwa": "syruppay/syruppay/jose/jwa/",
+//      "syruppay_jose_jwe": "syruppay/syruppay/jose/jwe/",
+//      "syruppay_jose_jws": "syruppay/syruppay/jose/jws/",
+//      "syruppay_jose_util": "syruppay/syruppay/jose/util/",
+//      "syruppay_jose": "syruppay/syruppay/jose/"
     }
   }
 }
