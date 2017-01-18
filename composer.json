@@ -40,6 +40,6 @@
       "syruppay_jose_jws": "syruppay/syruppay/jose/jws/",
       "syruppay_jose_util": "syruppay/syruppay/jose/util/",
       "syruppay_jose": "syruppay/syruppay/jose/"
-    },
+    }
   }
 }
