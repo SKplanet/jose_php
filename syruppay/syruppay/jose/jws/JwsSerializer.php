@@ -119,7 +119,7 @@ class syruppay_jose_jws_JwsSerializer implements syruppay_jose_JoseAction
      */
     public function compactDeserialization()
     {
-        $jwsAlg = syruppay_jose_jwa_JwaFactoryJwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
+        $jwsAlg = syruppay_jose_jwa_JwaFactory::getJwsAlgorithm($this->joseHeader->getAlg());
         $jwsAlg->verify(sprintf("%s.%s", $this->b64header, $this->b64Payload), $this->b64Signature, $this->key);
 
         return syruppay_jose_util_Base64UrlSafeEncoder::decode($this->b64Payload);
